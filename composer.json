@@ -1,0 +1,60 @@
+{
+    "name": "avto-dev/amqp-rabbit-manager",
+    "description": "RabbitMQ manager",
+    "keywords": [
+        "amqp",
+        "rabbitmq",
+        "laravel"
+    ],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "avto-dev",
+            "homepage": "https://github.com/avto-dev"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3",
+        "ext-amqp": "*",
+        "illuminate/support": ">=5.5.0 <5.8.0",
+        "enqueue/amqp-ext": "^0.9"
+    },
+    "require-dev": {
+        "laravel/laravel": ">=5.5.0 <5.8.0",
+        "phpunit/phpunit": "~5.7.10 || ^6.4 || ~7.0",
+        "mockery/mockery": "0.9.* || ~1.0",
+        "symfony/var-dumper": "~3.2 || ^4.0",
+        "phpstan/phpstan": "~0.9 || ^0.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "AvtoDev\\AmqpRabbitManager\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "AvtoDev\\AmqpRabbitManager\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "@php ./vendor/bin/phpunit --no-coverage",
+        "test-cover": "@php ./vendor/bin/phpunit --coverage-html='./coverage/html'",
+        "phpstan": "@php ./vendor/bin/phpstan analyze --no-progress --ansi --level=max ./src"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "AvtoDev\\AmqpRabbitManager\\LaravelPackageServiceProvider"
+            ]
+        }
+    },
+    "support": {
+        "issues": "https://github.com/avto-dev/amqp-rabbit-manager/issues",
+        "source": "https://github.com/avto-dev/amqp-rabbit-manager"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "prefer-stable": true
+}
