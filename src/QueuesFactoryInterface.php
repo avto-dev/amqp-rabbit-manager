@@ -39,9 +39,9 @@ interface QueuesFactoryInterface
      *
      * @param string $queue_id
      *
-     * @return AmqpQueue
      * @throws FactoryException If unknown queue passed
      *
+     * @return AmqpQueue
      */
     public function make(string $queue_id): AmqpQueue;
 }

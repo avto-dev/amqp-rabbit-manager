@@ -99,9 +99,9 @@ class ConnectionsFactory implements ConnectionsFactoryInterface
      *
      * @param string $connection_name
      *
-     * @return ConnectionConfig
      * @throws FactoryException When connection is not exists
      *
+     * @return ConnectionConfig
      */
     public function configuration(string $connection_name): ConnectionConfig
     {

@@ -28,20 +28,6 @@ class ServiceProvider extends IlluminateServiceProvider
     }
 
     /**
-     * Initialize configs.
-     *
-     * @return void
-     */
-    protected function initializeConfigs(): void
-    {
-        $this->mergeConfigFrom(static::getConfigPath(), static::getConfigRootKeyName());
-
-        $this->publishes([
-            \realpath(static::getConfigPath()) => config_path(\basename(static::getConfigPath())),
-        ], 'config');
-    }
-
-    /**
      * Get config root key name.
      *
      * @return string
@@ -59,6 +45,20 @@ class ServiceProvider extends IlluminateServiceProvider
     public static function getConfigPath(): string
     {
         return __DIR__ . '/../config/rabbitmq.php';
+    }
+
+    /**
+     * Initialize configs.
+     *
+     * @return void
+     */
+    protected function initializeConfigs(): void
+    {
+        $this->mergeConfigFrom(static::getConfigPath(), static::getConfigRootKeyName());
+
+        $this->publishes([
+            \realpath(static::getConfigPath()) => config_path(\basename(static::getConfigPath())),
+        ], 'config');
     }
 
     /**

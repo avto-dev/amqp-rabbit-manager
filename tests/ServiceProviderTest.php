@@ -34,6 +34,18 @@ class ServiceProviderTest extends AbstractTestCase
     protected $root;
 
     /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->manager = $this->app->make(ConnectionsFactoryInterface::class);
+        $this->factory = $this->app->make(QueuesFactoryInterface::class);
+        $this->root    = ServiceProvider::getConfigRootKeyName();
+    }
+
+    /**
      * @return void
      */
     public function testDiRegistration(): void
@@ -48,7 +60,6 @@ class ServiceProviderTest extends AbstractTestCase
      */
     public function testCorrectNamesResolving(): void
     {
-
         $this->assertSame(\array_keys($this->config()->get("{$this->root}.connections")), $this->manager->names());
         $this->assertSame(\array_keys($this->config()->get("{$this->root}.queues")), $this->factory->ids());
     }
@@ -71,17 +82,5 @@ class ServiceProviderTest extends AbstractTestCase
         foreach (\array_keys($this->config()->get("{$this->root}.queues")) as $name) {
             $this->assertInstanceOf(AmqpQueue::class, $this->factory->make($name));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->manager = $this->app->make(ConnectionsFactoryInterface::class);
-        $this->factory = $this->app->make(QueuesFactoryInterface::class);
-        $this->root    = ServiceProvider::getConfigRootKeyName();
     }
 }

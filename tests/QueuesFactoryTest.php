@@ -39,6 +39,16 @@ class QueuesFactoryTest extends AbstractTestCase
     ];
 
     /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->factory = new QueuesFactory($this->queues_declaration);
+    }
+
+    /**
      * @return void
      */
     public function testInstanceOf(): void
@@ -115,15 +125,5 @@ class QueuesFactoryTest extends AbstractTestCase
 
         $this->factory->removeFactory($queue_id);
         $this->assertNotContains($queue_id, $this->factory->ids());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->factory = new QueuesFactory($this->queues_declaration);
     }
 }

@@ -5,13 +5,23 @@ namespace AvtoDev\AmqpRabbitManager\Tests;
 use Illuminate\Foundation\Application;
 use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\AmqpRabbitManager\ServiceProvider;
-use Illuminate\Config\Repository as ConfigRepository;
 use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
+use Illuminate\Config\Repository as ConfigRepository;
 use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class AbstractTestCase extends BaseTestCase
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->app->register(ServiceProvider::class);
+    }
+
     /**
      * Creates the application.
      *
@@ -30,16 +40,6 @@ abstract class AbstractTestCase extends BaseTestCase
         $app->register(ServiceProvider::class);
 
         return $app;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->app->register(ServiceProvider::class);
     }
 
     /**

@@ -51,6 +51,19 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     protected $queues;
 
     /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->deleteAllQueues();
+
+        $this->command   = $this->app->make(RabbitSetupCommand::class);
+        $this->setup_map = $this->config()->get(ServiceProvider::getConfigRootKeyName() . '.setup');
+    }
+
+    /**
      * @return void
      */
     public function testCommandExecution(): void
@@ -187,18 +200,5 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
                 $this->assertNotRegExp("~^.*Skip.+{$queue_id_safe}.*$~ium", $output);
             }
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->deleteAllQueues();
-
-        $this->command   = $this->app->make(RabbitSetupCommand::class);
-        $this->setup_map = $this->config()->get(ServiceProvider::getConfigRootKeyName() . '.setup');
     }
 }

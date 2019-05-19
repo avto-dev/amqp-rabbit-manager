@@ -39,7 +39,7 @@ class RabbitSetupCommand extends Command
     protected $map = [];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param ConfigRepository $config
      */

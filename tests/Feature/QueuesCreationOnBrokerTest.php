@@ -6,8 +6,8 @@ namespace AvtoDev\AmqpRabbitManager\Tests\Feature;
 
 use Illuminate\Support\Str;
 use Interop\Amqp\AmqpQueue;
-use AvtoDev\AmqpRabbitManager\Tests\AbstractTestCase;
 use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
+use AvtoDev\AmqpRabbitManager\Tests\AbstractTestCase;
 use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
 
 /**
@@ -26,6 +26,19 @@ class QueuesCreationOnBrokerTest extends AbstractTestCase
      * @var QueuesFactoryInterface
      */
     protected $queues;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->connections = $this->app->make(ConnectionsFactoryInterface::class);
+        $this->queues      = $this->app->make(QueuesFactoryInterface::class);
+
+        $this->deleteAllQueues();
+    }
 
     /**
      * @medium
@@ -75,18 +88,5 @@ class QueuesCreationOnBrokerTest extends AbstractTestCase
 
         // Remove queue
         $connection->deleteQueue($queue);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->connections = $this->app->make(ConnectionsFactoryInterface::class);
-        $this->queues      = $this->app->make(QueuesFactoryInterface::class);
-
-        $this->deleteAllQueues();
     }
 }
