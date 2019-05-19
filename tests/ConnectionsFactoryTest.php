@@ -159,7 +159,10 @@ class ConnectionsFactoryTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->factory =
-            new ConnectionsFactory($this->connections_settings, $this->connection_defaults, $this->default);
+        $this->factory = new ConnectionsFactory(
+            $this->connections_settings,
+            $this->connection_defaults,
+            $this->default
+        );
     }
 }
