@@ -2,7 +2,7 @@
   <img src="https://laravel.com/assets/img/components/logo-laravel.svg" alt="Laravel" width="240" />
 </p>
 
-# AmqpRabbitManager for Laravel applications
+# RabbitMQ manager for Laravel applications
 
 [![Version][badge_packagist_version]][link_packagist]
 [![Version][badge_php_version]][link_packagist]
@@ -12,7 +12,9 @@
 [![Downloads count][badge_downloads_count]][link_packagist]
 [![License][badge_license]][link_license]
 
-This package for {% ... %}.
+This package can be used for easy access to the RabbitMQ entities like connections or queues.
+
+> Installed php extension `ext-amqp` is required. Installation steps can be found in [Dockerfile](./docker/app/Dockerfile).
 
 ## Install
 
@@ -31,36 +33,74 @@ Laravel 5.5 and above uses Package Auto-Discovery, so doesn't require you to man
 ```php
 'providers' => [
     // ...
-    AvtoDev\AmqpRabbitManager\LaravelPackageServiceProvider::class,
+    AvtoDev\AmqpRabbitManager\ServiceProvider::class,
 ]
 ```
 
-If you wants to disable package service-provider auto discover, just add into your `composer.json` next lines:
+> If you wants to disable package service-provider auto discover, just add into your `composer.json` next lines:
+>
+> ```json
+> {
+>     "extra": {
+>         "laravel": {
+>             "dont-discover": [
+>                 "avto-dev/amqp-rabbit-manager"
+>             ]
+>         }
+>     }
+> }
+> ```
 
-```json
+After that you should "publish" package configuration file using next command:
+
+```bash
+$ php ./artisan vendor:publish --provider='AvtoDev\AmqpRabbitManager\ServiceProvider'
+```
+
+And configure it in the file `./config/rabbitmq.php`.
+
+## Usage
+
+In any part of your application you can resolve connection or queue factories. For example, in artisan command:
+
+```php
+<?php
+
+namespace App\Console\Commands;
+
+use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
+
+class SomeCommand extends \Illuminate\Console\Command
 {
-    "extra": {
-        "laravel": {
-            "dont-discover": [
-                "avto-dev/amqp-rabbit-manager"
-            ]
-        }
+    /**
+     * The console command name.
+     *
+     * @var string
+     */
+    protected $name = 'some:command';
+    
+    /**
+     * Execute the console command.
+     *
+     * @param ConnectionsFactoryInterface $connections
+     *
+     * @return void
+     */
+    public function handle(ConnectionsFactoryInterface $connections): void
+    {
+        $connections->default(); // Get the default RabbitMQ connection instance
     }
 }
 ```
 
-## Usage
-
-{% Usage descriptions goes here %}
-
 ### Testing
 
-For package testing we use `phpunit` framework. Just write into your terminal:
+For package testing we use `phpunit` framework and `docker-ce` + `docker-compose` as develop environment. So, just write into your terminal after repository cloning:
 
 ```shell
-$ git clone git@github.com:avto-dev/amqp-rabbit-manager.git ./amqp-rabbit-manager && cd $_
-$ composer install
-$ composer test
+$ make build
+$ make latest # or 'make lowest'
+$ make test
 ```
 
 ## Changes log
@@ -97,7 +137,7 @@ This is open-sourced software licensed under the [MIT License][link_license].
 [link_build_status]:https://travis-ci.org/avto-dev/amqp-rabbit-manager
 [link_coverage]:https://codecov.io/gh/avto-dev/amqp-rabbit-manager/
 [link_changes_log]:https://github.com/avto-dev/amqp-rabbit-manager/blob/master/CHANGELOG.md
-[link_code_quality]:https://scrutinizer-ci.org/g/avto-dev/amqp-rabbit-manager/
+[link_code_quality]:https://scrutinizer-ci.com/g/avto-dev/amqp-rabbit-manager/
 [link_issues]:https://github.com/avto-dev/amqp-rabbit-manager/issues
 [link_create_issue]:https://github.com/avto-dev/amqp-rabbit-manager/issues/new/choose
 [link_commits]:https://github.com/avto-dev/amqp-rabbit-manager/commits
