@@ -110,7 +110,7 @@ return [
 
     'setup' => [
         'rabbit-default' => [
-            'some-queue-id'
-        ]
+            'some-queue-id',
+        ],
     ],
 ];

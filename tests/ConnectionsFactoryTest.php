@@ -48,6 +48,20 @@ class ConnectionsFactoryTest extends AbstractTestCase
     protected $default = 'conn-1';
 
     /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->factory = new ConnectionsFactory(
+            $this->connections_settings,
+            $this->connection_defaults,
+            $this->default
+        );
+    }
+
+    /**
      * @return void
      */
     public function testInstanceOf(): void
@@ -150,19 +164,5 @@ class ConnectionsFactoryTest extends AbstractTestCase
 
         $this->factory->removeFactory($connection_name);
         $this->assertNotContains($connection_name, $this->factory->names());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->factory = new ConnectionsFactory(
-            $this->connections_settings,
-            $this->connection_defaults,
-            $this->default
-        );
     }
 }
