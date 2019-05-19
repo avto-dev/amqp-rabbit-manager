@@ -2,11 +2,11 @@
 
 namespace AvtoDev\AmqpRabbitManager;
 
-use AvtoDev\AmqpRabbitManager\Exceptions\RabbitMqException;
 use Interop\Amqp\AmqpQueue;
+use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 
 /**
- * @see \AvtoDev\AmqpRabbitManager\ServiceProvider::registerQueuesFactory()
+ * @see \AvtoDev\AmqpRabbitManager\QueuesFactory
  */
 interface QueuesFactoryInterface
 {
@@ -39,9 +39,9 @@ interface QueuesFactoryInterface
      *
      * @param string $queue_id
      *
-     * @throws RabbitMqException If unknown queue passed
-     *
      * @return AmqpQueue
+     * @throws FactoryException If unknown queue passed
+     *
      */
     public function make(string $queue_id): AmqpQueue;
 }

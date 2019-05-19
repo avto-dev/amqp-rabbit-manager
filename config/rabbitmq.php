@@ -96,4 +96,21 @@ return [
         ],
 
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Setup Broker Settings
+    |--------------------------------------------------------------------------
+    |
+    | Command 'rabbit:setup' uses next configuration for creating queues on
+    | RabbitMQ server. Array keys is connection names, and values - is array
+    | of queue IDs witch should be created using connection.
+    |
+    */
+
+    'setup' => [
+        'rabbit-default' => [
+            'some-queue-id'
+        ]
+    ],
 ];

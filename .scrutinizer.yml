@@ -1,8 +1,8 @@
 filter:
   excluded_paths:
-  - tests/
+    - tests/
   dependency_paths:
-  - vendor/
+    - vendor/
 
 checks:
   php:
@@ -10,7 +10,7 @@ checks:
     duplication: true
 
 build_failure_conditions:
-- 'elements.rating(<= D).exists' # No classes/methods with a rating of D or worse
+  - 'elements.rating(<= D).exists' # No classes/methods with a rating of D or worse
 
 build:
   environment:
@@ -25,10 +25,10 @@ build:
 
   dependencies:
     override:
-    - composer update --no-interaction
+      - composer update --no-interaction
 
   nodes:
     analysis:
       tests:
         override:
-        - php-scrutinizer-run --enable-security-analysis
+          - php-scrutinizer-run --enable-security-analysis

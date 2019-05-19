@@ -4,10 +4,43 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager;
 
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 class ServiceProvider extends IlluminateServiceProvider
 {
+    /**
+     * Register package services.
+     *
+     * @return void
+     */
+    public function register(): void
+    {
+        $this->initializeConfigs();
+
+        $this->registerQueuesFactory();
+        $this->registerConnectionsFactory();
+
+        if ($this->app->runningInConsole()) {
+            $this->registerCommands();
+        }
+    }
+
+    /**
+     * Initialize configs.
+     *
+     * @return void
+     */
+    protected function initializeConfigs(): void
+    {
+        $this->mergeConfigFrom(static::getConfigPath(), static::getConfigRootKeyName());
+
+        $this->publishes([
+            \realpath(static::getConfigPath()) => config_path(\basename(static::getConfigPath())),
+        ], 'config');
+    }
+
     /**
      * Get config root key name.
      *
@@ -25,17 +58,7 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     public static function getConfigPath(): string
     {
-        return __DIR__ . '../config/rabbitmq.php';
-    }
-
-    /**
-     * Register package services.
-     *
-     * @return void
-     */
-    public function register(): void
-    {
-        $this->initializeConfigs();
+        return __DIR__ . '/../config/rabbitmq.php';
     }
 
     /**
@@ -45,7 +68,15 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     protected function registerQueuesFactory(): void
     {
+        $this->app->singleton(
+            QueuesFactoryInterface::class,
+            function (Container $container): QueuesFactoryInterface {
+                /** @var ConfigRepository $config */
+                $config = $container->make(ConfigRepository::class);
 
+                return new QueuesFactory((array) $config->get(static::getConfigRootKeyName() . '.queues'));
+            }
+        );
     }
 
     /**
@@ -55,20 +86,33 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     protected function registerConnectionsFactory(): void
     {
+        $this->app->singleton(
+            ConnectionsFactoryInterface::class,
+            function (Container $container): ConnectionsFactoryInterface {
+                /** @var ConfigRepository $config */
+                $config = $container->make(ConfigRepository::class);
+                $root   = static::getConfigRootKeyName();
 
+                return new ConnectionsFactory(
+                    (array) $config->get("{$root}.connections"),
+                    (array) $config->get("{$root}.connection_defaults"),
+                    $config->get("{$root}.default_connection")
+                );
+            }
+        );
     }
 
     /**
-     * Initialize configs.
+     * Register console commands.
      *
      * @return void
      */
-    protected function initializeConfigs(): void
+    protected function registerCommands(): void
     {
-        $this->mergeConfigFrom(static::getConfigPath(), static::getConfigRootKeyName());
+        $this->app->singleton('command.rabbit.setup', function (Container $container) {
+            return $container->make(Commands\RabbitSetupCommand::class);
+        });
 
-        $this->publishes([
-            \realpath(static::getConfigPath()) => config_path(\basename(static::getConfigPath())),
-        ], 'config');
+        $this->commands('command.rabbit.setup');
     }
 }

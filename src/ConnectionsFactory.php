@@ -8,7 +8,7 @@ use Closure;
 use Enqueue\AmqpExt\AmqpContext;
 use Enqueue\AmqpTools\ConnectionConfig;
 use Enqueue\AmqpExt\AmqpConnectionFactory;
-use AvtoDev\AmqpRabbitManager\Exceptions\RabbitMqException;
+use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 
 /**
  * @see \AvtoDev\AmqpRabbitManager\ServiceProvider::registerConnectionsFactory()
@@ -61,7 +61,7 @@ class ConnectionsFactory implements ConnectionsFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function addFactory(string $name, array $settings): void
+    public function addFactory(string $name, array $settings = []): void
     {
         // Create connections factory
         $this->connection_factories[$name] = Closure::fromCallable(function () use ($settings): AmqpConnectionFactory {
@@ -100,13 +100,13 @@ class ConnectionsFactory implements ConnectionsFactoryInterface
      * @param string $connection_name
      *
      * @return ConnectionConfig
-     * @throws RabbitMqException When connection is not exists
+     * @throws FactoryException When connection is not exists
      *
      */
     public function configuration(string $connection_name): ConnectionConfig
     {
         if (! isset($this->connection_factories[$connection_name])) {
-            throw RabbitMqException::connectionNotExists($connection_name);
+            throw FactoryException::connectionNotExists($connection_name);
         }
 
         return $this->connection_factories[$connection_name]()->getConfig();
@@ -115,12 +115,12 @@ class ConnectionsFactory implements ConnectionsFactoryInterface
     /**
      * {@inheritdoc}
      *
-     * @throws RabbitMqException
+     * @throws FactoryException
      */
     public function default(): AmqpContext
     {
         if ($this->default_name === null) {
-            throw RabbitMqException::defaultConnectionNotSet();
+            throw FactoryException::defaultConnectionNotSet();
         }
 
         return $this->make($this->default_name);
@@ -131,12 +131,12 @@ class ConnectionsFactory implements ConnectionsFactoryInterface
      *
      * @link <https://github.com/php-enqueue/enqueue-dev/blob/master/docs/transport/amqp.md#create-context>
      *
-     * @throws RabbitMqException
+     * @throws FactoryException
      */
     public function make(string $connection_name): AmqpContext
     {
         if (! isset($this->context_factories[$connection_name])) {
-            throw RabbitMqException::connectionNotExists($connection_name);
+            throw FactoryException::connectionNotExists($connection_name);
         }
 
         return $this->context_factories[$connection_name]();

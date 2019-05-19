@@ -5,7 +5,7 @@ namespace AvtoDev\AmqpRabbitManager;
 use Enqueue\AmqpExt\AmqpContext;
 
 /**
- * @see \App\Services\RabbitMq\RabbitMqManager
+ * @see \AvtoDev\AmqpRabbitManager\ConnectionsFactory
  */
 interface ConnectionsFactoryInterface
 {
@@ -26,7 +26,7 @@ interface ConnectionsFactoryInterface
      *
      * @return void
      */
-    public function addFactory(string $name, array $settings): void;
+    public function addFactory(string $name, array $settings = []): void;
 
     /**
      * Remove connection factory.

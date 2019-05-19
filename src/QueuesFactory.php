@@ -6,10 +6,10 @@ namespace AvtoDev\AmqpRabbitManager;
 
 use Closure;
 use Interop\Amqp\AmqpQueue;
-use App\Exceptions\RabbitMqException;
+use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 
 /**
- * @see \App\Providers\RabbitMqServiceProvider
+ * @see \AvtoDev\AmqpRabbitManager\ServiceProvider::registerQueuesFactory()
  */
 class QueuesFactory implements QueuesFactoryInterface
 {
@@ -42,7 +42,7 @@ class QueuesFactory implements QueuesFactoryInterface
             $consumer_tag = $settings['consumer_tag'] ?? null;
 
             if (! \is_string($name)) {
-                throw RabbitMqException::queueIdNotSet($queue_id);
+                throw FactoryException::queueIdNotSet($queue_id);
             }
 
             $queue = new \Interop\Amqp\Impl\AmqpQueue($name);
@@ -82,12 +82,12 @@ class QueuesFactory implements QueuesFactoryInterface
     /**
      * {@inheritdoc}
      *
-     * @throws RabbitMqException
+     * @throws FactoryException
      */
     public function make(string $queue_id): AmqpQueue
     {
         if (! isset($this->factories[$queue_id])) {
-            throw RabbitMqException::queueNotExists($queue_id);
+            throw FactoryException::queueNotExists($queue_id);
         }
 
         return $this->factories[$queue_id]();

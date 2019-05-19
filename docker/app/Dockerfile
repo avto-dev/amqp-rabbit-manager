@@ -26,6 +26,8 @@ ENV RUNTIME_DEPS \
     gcc
 
 ENV PERMANENT_DEPS \
+    # fix xdebug error "/usr/local/bin/docker-php-ext-enable: line 83: nm: not found"
+    binutils \
     git
 
 RUN echo $PATH && exit
@@ -51,6 +53,8 @@ RUN set -xe \
         && make install \
         && echo 'extension=amqp.so' > /usr/local/etc/php/conf.d/amqp.ini ) \
         && rm -Rf /tmp/php-amqp \
+    # install xdebug (for testing with code coverage), but not enable it
+    && pecl install xdebug-2.7.2 \
     && apk del .build-deps \
     && mkdir /src ${COMPOSER_HOME} \
     && composer global require 'hirak/prestissimo' --no-interaction --no-suggest --prefer-dist \
