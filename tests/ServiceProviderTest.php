@@ -4,14 +4,14 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager\Tests;
 
-use AvtoDev\AmqpRabbitManager\ExchangesFactory;
-use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
 use Enqueue\AmqpExt\AmqpContext;
 use Interop\Amqp\Impl\AmqpQueue;
 use AvtoDev\AmqpRabbitManager\QueuesFactory;
 use AvtoDev\AmqpRabbitManager\ServiceProvider;
+use AvtoDev\AmqpRabbitManager\ExchangesFactory;
 use AvtoDev\AmqpRabbitManager\ConnectionsFactory;
 use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
+use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
 use AvtoDev\AmqpRabbitManager\Commands\RabbitSetupCommand;
 use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
 

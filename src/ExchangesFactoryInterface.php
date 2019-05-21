@@ -2,8 +2,8 @@
 
 namespace AvtoDev\AmqpRabbitManager;
 
-use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 use Interop\Amqp\AmqpTopic;
+use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 
 /**
  * @see \AvtoDev\AmqpRabbitManager\ExchangesFactory
@@ -39,9 +39,9 @@ interface ExchangesFactoryInterface
      *
      * @param string $exchange_id
      *
-     * @return AmqpTopic
-     *
      * @throws FactoryException If unknown queue passed
+     *
+     * @return AmqpTopic
      */
     public function make(string $exchange_id): AmqpTopic;
 }
