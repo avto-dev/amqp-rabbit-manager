@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager;
 
+use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
@@ -20,6 +21,7 @@ class ServiceProvider extends IlluminateServiceProvider
         $this->initializeConfigs();
 
         $this->registerQueuesFactory();
+        $this->registerExchangesFactory();
         $this->registerConnectionsFactory();
 
         if ($this->app->runningInConsole()) {
@@ -80,6 +82,24 @@ class ServiceProvider extends IlluminateServiceProvider
     }
 
     /**
+     * Register exchanges factory.
+     *
+     * @return void
+     */
+    protected function registerExchangesFactory(): void
+    {
+        $this->app->singleton(
+            ExchangesFactoryInterface::class,
+            function (Container $container): ExchangesFactoryInterface {
+                /** @var ConfigRepository $config */
+                $config = $container->make(ConfigRepository::class);
+
+                return new ExchangesFactory((array) $config->get(static::getConfigRootKeyName() . '.exchanges'));
+            }
+        );
+    }
+
+    /**
      * Register connections factory.
      *
      * @return void
@@ -109,8 +129,13 @@ class ServiceProvider extends IlluminateServiceProvider
      */
     protected function registerCommands(): void
     {
-        $this->app->singleton('command.rabbit.setup', function (Container $container) {
-            return $container->make(Commands\RabbitSetupCommand::class);
+        $this->app->singleton('command.rabbit.setup', function (Container $container): Command {
+            /** @var ConfigRepository $config */
+            $config = $container->make(ConfigRepository::class);
+
+            return $container->make(Commands\RabbitSetupCommand::class, [
+                'map' => $config->get(static::getConfigRootKeyName() . '.setup'),
+            ]);
         });
 
         $this->commands('command.rabbit.setup');

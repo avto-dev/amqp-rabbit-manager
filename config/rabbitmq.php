@@ -1,6 +1,7 @@
 <?php
 
 use Interop\Amqp\AmqpQueue;
+use Interop\Amqp\AmqpTopic;
 
 return [
     /*
@@ -99,18 +100,65 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Exchange Configurations
+    |--------------------------------------------------------------------------
+    |
+    | Key is Exchanges ID, and vale is its configuration. 'name' is required.
+    |
+    | Types:
+    |
+    |  > 'direct'  - Direct the message to the queue that is bound to it;
+    |  > 'fanout'  - When a Fanout exchange receives a message, a copy of this
+    |                message is sent to all queues bound to it;
+    |  > 'topic'   - In the Topic it is possible to use patterns for routing
+    |                keys;
+    |  > 'headers' - Is similar to Topic, but instead of comparing Routing Key,
+    |                it compares the attributes present in the message header
+    |                with the attributes present in the arguments defined when
+    |                we bind a queue in exchange.
+    |
+    | Flags: <https://www.rabbitmq.com/amqp-0-9-1-reference.html#class.exchange>
+    |
+    */
+
+    'exchanges' => [
+
+        'some-exchange-id' => [
+            'name'      => 'exchange-name',
+            'type'      => AmqpTopic::TYPE_DIRECT,
+            'flags'     => AmqpTopic::FLAG_DURABLE, // Durable exchanges remain active when a server restarts
+            'arguments' => [],
+        ],
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Setup Broker Settings
     |--------------------------------------------------------------------------
     |
-    | Command 'rabbit:setup' uses next configuration for creating queues on
-    | RabbitMQ server. Array keys is connection names, and values - is array
-    | of queue IDs witch should be created using connection.
+    | Command 'rabbit:setup' uses next configuration for creating queues and
+    | exchanges on RabbitMQ server. Array keys is connection names, and
+    | values - is array contains queue and exchange IDs witch should be created
+    | using connection.
+    |
+    | Structure is:
+    |
+    | %connection_name_1% => [
+    |   'queues'    => [ %queue_id_1%, %queue_id_2% ],
+    |   'exchanges' => [ %exchange_id_1%, %exchange_id_2% ],
+    | ]
     |
     */
 
     'setup' => [
         'rabbit-default' => [
-            'some-queue-id',
+            'queues' => [
+                'some-queue-id',
+            ],
+            'exchanges' => [
+                'some-exchange-id',
+            ],
         ],
     ],
 ];

@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager\Tests;
 
+use AvtoDev\AmqpRabbitManager\ExchangesFactory;
+use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
 use Enqueue\AmqpExt\AmqpContext;
 use Interop\Amqp\Impl\AmqpQueue;
 use AvtoDev\AmqpRabbitManager\QueuesFactory;
@@ -21,12 +23,17 @@ class ServiceProviderTest extends AbstractTestCase
     /**
      * @var ConnectionsFactoryInterface
      */
-    protected $manager;
+    protected $connections;
 
     /**
      * @var QueuesFactory
      */
-    protected $factory;
+    protected $queues;
+
+    /**
+     * @var ExchangesFactory
+     */
+    protected $exchanges;
 
     /**
      * @var string
@@ -40,9 +47,10 @@ class ServiceProviderTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->manager = $this->app->make(ConnectionsFactoryInterface::class);
-        $this->factory = $this->app->make(QueuesFactoryInterface::class);
-        $this->root    = ServiceProvider::getConfigRootKeyName();
+        $this->connections = $this->app->make(ConnectionsFactoryInterface::class);
+        $this->queues      = $this->app->make(QueuesFactoryInterface::class);
+        $this->exchanges   = $this->app->make(ExchangesFactoryInterface::class);
+        $this->root        = ServiceProvider::getConfigRootKeyName();
     }
 
     /**
@@ -50,8 +58,9 @@ class ServiceProviderTest extends AbstractTestCase
      */
     public function testDiRegistration(): void
     {
-        $this->assertInstanceOf(ConnectionsFactory::class, $this->manager);
-        $this->assertInstanceOf(QueuesFactory::class, $this->factory);
+        $this->assertInstanceOf(ConnectionsFactory::class, $this->connections);
+        $this->assertInstanceOf(QueuesFactory::class, $this->queues);
+        $this->assertInstanceOf(ExchangesFactory::class, $this->exchanges);
         $this->assertInstanceOf(RabbitSetupCommand::class, $this->app->make('command.rabbit.setup'));
     }
 
@@ -60,8 +69,9 @@ class ServiceProviderTest extends AbstractTestCase
      */
     public function testCorrectNamesResolving(): void
     {
-        $this->assertSame(\array_keys($this->config()->get("{$this->root}.connections")), $this->manager->names());
-        $this->assertSame(\array_keys($this->config()->get("{$this->root}.queues")), $this->factory->ids());
+        $this->assertSame(\array_keys($this->config()->get("{$this->root}.connections")), $this->connections->names());
+        $this->assertSame(\array_keys($this->config()->get("{$this->root}.queues")), $this->queues->ids());
+        $this->assertSame(\array_keys($this->config()->get("{$this->root}.queues")), $this->queues->ids());
     }
 
     /**
@@ -70,7 +80,7 @@ class ServiceProviderTest extends AbstractTestCase
     public function testConnectionsCreating(): void
     {
         foreach (\array_keys($this->config()->get("{$this->root}.connections")) as $name) {
-            $this->assertInstanceOf(AmqpContext::class, $this->manager->make($name));
+            $this->assertInstanceOf(AmqpContext::class, $this->connections->make($name));
         }
     }
 
@@ -80,7 +90,7 @@ class ServiceProviderTest extends AbstractTestCase
     public function testQueuesCreating(): void
     {
         foreach (\array_keys($this->config()->get("{$this->root}.queues")) as $name) {
-            $this->assertInstanceOf(AmqpQueue::class, $this->factory->make($name));
+            $this->assertInstanceOf(AmqpQueue::class, $this->queues->make($name));
         }
     }
 }

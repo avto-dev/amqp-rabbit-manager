@@ -27,7 +27,7 @@ class FactoryExceptionTest extends AbstractTestCase
     {
         $this->assertRegExp('~connection.*not exists~i', FactoryException::connectionNotExists('')->getMessage());
         $this->assertRegExp('~Default.*not set~i', FactoryException::defaultConnectionNotSet()->getMessage());
-        $this->assertRegExp('~Queue.+ID.*not set~i', FactoryException::queueIdNotSet('')->getMessage());
+        $this->assertRegExp('~Queue.+ID.*not set~i', FactoryException::queueNameNotSet('')->getMessage());
         $this->assertRegExp('~Queue.*not exists~i', FactoryException::queueNotExists('')->getMessage());
     }
 }
