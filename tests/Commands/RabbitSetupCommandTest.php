@@ -6,6 +6,7 @@ namespace AvtoDev\AmqpRabbitManager\Tests\Commands;
 
 use Exception;
 use Illuminate\Support\Str;
+use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\AmqpRabbitManager\ServiceProvider;
 use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
 use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
@@ -106,9 +107,9 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     /**
      * @small
      *
+     * @return void
      * @throws Exception
      *
-     * @return void
      */
     public function testCommandCallWithoutArguments(): void
     {
@@ -145,6 +146,36 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
      * @small
      *
      * @return void
+     *
+     * @throws Exception
+     */
+    public function testCommandCallWithEmptyMap(): void
+    {
+        $this->doesntExpectEvents([
+            QueueCreating::class, QueueCreated::class, ExchangeCreating::class, ExchangeCreated::class,
+            QueueDeleting::class, QueueDeleted::class, ExchangeDeleting::class, ExchangeDeleted::class,
+        ]);
+
+        $this->command = $this->app->make(RabbitSetupCommand::class, [
+            'map' => [],
+        ]);
+
+        $this->app->make(Kernel::class)->registerCommand($this->command);
+
+        $this->assertSame(0, $this->artisan($this->command_signature));
+        $output = $this->console()->output();
+
+        $this->assertNotRegExp('~^.+connection.*$~ium', $output);
+        $this->assertNotRegExp('~^.*Create queue.*$~ium', $output);
+        $this->assertNotRegExp('~^.*Delete queue.*$~ium', $output);
+        $this->assertNotRegExp('~^.*Create exchange.*$~ium', $output);
+        $this->assertNotRegExp('~^.*Delete exchange.*$~ium', $output);
+    }
+
+    /**
+     * @small
+     *
+     * @return void
      */
     public function testCommandCallWithRecreateButWithoutForce(): void
     {
@@ -166,9 +197,9 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     /**
      * @small
      *
+     * @return void
      * @throws Exception
      *
-     * @return void
      */
     public function testCommandCallWithRecreateAndForce(): void
     {
@@ -206,9 +237,9 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     /**
      * @small
      *
+     * @return void
      * @throws Exception
      *
-     * @return void
      */
     public function testPassingUnknownQueueIds(): void
     {
@@ -245,9 +276,9 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     /**
      * @small
      *
+     * @return void
      * @throws Exception
      *
-     * @return void
      */
     public function testPassingAllKnownQueueAndExchangeIds(): void
     {

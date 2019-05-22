@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 ### Changed
 
 - `setup` section in configuration file and "map" in `rabbit:setup` command
-- `rabbit:setup` command now creates exchanges (and allows `--exchange-id` argument)
+- `rabbit:setup` command now creates exchanges (and supports `--exchange-id` argument)
 
 ### Fixed
 
