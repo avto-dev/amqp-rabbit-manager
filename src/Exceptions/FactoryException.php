@@ -34,15 +34,15 @@ class FactoryException extends RuntimeException
     }
 
     /**
-     * @param string         $queie_id
+     * @param string         $queue_id
      * @param int            $code
      * @param Throwable|null $prev
      *
      * @return self
      */
-    public static function queueIdNotSet(string $queie_id, int $code = 0, ?Throwable $prev = null): self
+    public static function queueNameNotSet(string $queue_id, int $code = 0, ?Throwable $prev = null): self
     {
-        return new static("Queue ID for [{$queie_id}] does not set", $code, $prev);
+        return new static("Queue name for queue with ID [{$queue_id}] does not set", $code, $prev);
     }
 
     /**
@@ -55,5 +55,29 @@ class FactoryException extends RuntimeException
     public static function queueNotExists(string $queue_name, int $code = 0, ?Throwable $prev = null): self
     {
         return new static("RabbitMQ queue [{$queue_name}] does not exists", $code, $prev);
+    }
+
+    /**
+     * @param string         $exchange_id
+     * @param int            $code
+     * @param Throwable|null $prev
+     *
+     * @return self
+     */
+    public static function exchangeNameNotSet(string $exchange_id, int $code = 0, ?Throwable $prev = null): self
+    {
+        return new static("Exchange name for exchange with ID [{$exchange_id}] does not set", $code, $prev);
+    }
+
+    /**
+     * @param string         $exchange_name
+     * @param int            $code
+     * @param Throwable|null $prev
+     *
+     * @return self
+     */
+    public static function exchangeNotExists(string $exchange_name, int $code = 0, ?Throwable $prev = null): self
+    {
+        return new static("RabbitMQ exchange [{$exchange_name}] does not exists", $code, $prev);
     }
 }

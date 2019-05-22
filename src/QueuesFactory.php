@@ -41,8 +41,8 @@ class QueuesFactory implements QueuesFactoryInterface
             $arguments    = $settings['arguments'] ?? null;
             $consumer_tag = $settings['consumer_tag'] ?? null;
 
-            if (! \is_string($name)) {
-                throw FactoryException::queueIdNotSet($queue_id);
+            if (! \is_string($name) || $name === '') {
+                throw FactoryException::queueNameNotSet($queue_id);
             }
 
             $queue = new \Interop\Amqp\Impl\AmqpQueue($name);

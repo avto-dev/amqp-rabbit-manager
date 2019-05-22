@@ -112,6 +112,26 @@ class QueuesFactoryTest extends AbstractTestCase
     }
 
     /**
+     * @return void
+     */
+    public function testExceptionThrownWhenQueueDeclaredWithEmptyName(): void
+    {
+        $this->expectException(FactoryException::class);
+        $this->expectExceptionMessageRegExp('~queue.*not.?set~i');
+
+        $this->factory = new QueuesFactory([
+            'foo' => [
+                'name'         => '',
+                'flags'        => \Interop\Amqp\AmqpQueue::FLAG_AUTODELETE,
+                'arguments'    => ['foo'],
+                'consumer_tag' => null,
+            ],
+        ]);
+
+        $this->factory->make('foo');
+    }
+
+    /**
      * @small
      *
      * @return void

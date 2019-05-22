@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## v2.0.0
+
+### Added
+
+- Exchanges factory
+- `rabbit:setup` command events _(fired when calling command **only**)_:
+  - `QueueCreating`
+  - `QueueCreated`
+  - `ExchangeCreating`
+  - `ExchangeCreated`
+  - `QueueDeleting`
+  - `QueueDeleted`
+  - `ExchangeDeleting`
+  - `ExchangeDeleted`
+
+### Changed
+
+- `setup` section in configuration file and "map" in `rabbit:setup` command
+- `rabbit:setup` command now creates exchanges (and supports `--exchange-id` argument)
+
+### Fixed
+
+- Exception messages
+
 ## v1.1.0
 
 ### Added

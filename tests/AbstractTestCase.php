@@ -7,6 +7,7 @@ use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\AmqpRabbitManager\ServiceProvider;
 use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
 use Illuminate\Config\Repository as ConfigRepository;
+use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
 use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
@@ -32,9 +33,6 @@ abstract class AbstractTestCase extends BaseTestCase
         /** @var Application $app */
         $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
 
-        // $app->useStoragePath(...);
-        // $app->loadEnvironmentFrom(...);
-
         $app->make(Kernel::class)->bootstrap();
 
         $app->register(ServiceProvider::class);
@@ -43,16 +41,18 @@ abstract class AbstractTestCase extends BaseTestCase
     }
 
     /**
-     * Delete all queues for all connections.
+     * Delete all queues and exchanges for all connections.
      *
      * @return void
      */
-    protected function deleteAllQueues(): void
+    protected function unsetBroker(): void
     {
         /** @var ConnectionsFactoryInterface $connections */
         $connections = $this->app->make(ConnectionsFactoryInterface::class);
         /** @var QueuesFactoryInterface $queues */
         $queues = $this->app->make(QueuesFactoryInterface::class);
+        /** @var QueuesFactoryInterface $queues */
+        $exchanges = $this->app->make(ExchangesFactoryInterface::class);
 
         // Delete all queues for all connections
         foreach ($connections->names() as $connection_name) {
@@ -62,6 +62,12 @@ abstract class AbstractTestCase extends BaseTestCase
                 $queue = $queues->make($id);
 
                 $connection->deleteQueue($queue);
+            }
+
+            foreach ($exchanges->ids() as $id) {
+                $exchange = $exchanges->make($id);
+
+                $connection->deleteTopic($exchange);
             }
         }
     }
