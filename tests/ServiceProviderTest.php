@@ -68,9 +68,16 @@ class ServiceProviderTest extends AbstractTestCase
     public function testDiRegistration(): void
     {
         $this->assertInstanceOf(ConnectionsFactory::class, $this->connections);
+        $this->assertSame($this->connections, $this->app->make(ConnectionsFactoryInterface::class)); // singleton?
+
         $this->assertInstanceOf(QueuesFactory::class, $this->queues);
+        $this->assertSame($this->queues, $this->app->make(QueuesFactoryInterface::class)); // singleton?
+
         $this->assertInstanceOf(ExchangesFactory::class, $this->exchanges);
-        $this->assertInstanceOf(RabbitSetupCommand::class, $this->app->make('command.rabbit.setup'));
+        $this->assertSame($this->exchanges, $this->app->make(ExchangesFactoryInterface::class)); // singleton?
+
+        $this->assertInstanceOf(RabbitSetupCommand::class, $cmd = $this->app->make('command.rabbit.setup'));
+        $this->assertSame($cmd, $this->app->make('command.rabbit.setup')); // singleton?
     }
 
     /**

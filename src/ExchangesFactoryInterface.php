@@ -39,7 +39,7 @@ interface ExchangesFactoryInterface
      *
      * @param string $exchange_id
      *
-     * @throws FactoryException If unknown queue passed
+     * @throws FactoryException If unknown exchange passed
      *
      * @return AmqpTopic
      */
