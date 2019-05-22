@@ -16,9 +16,10 @@ class QueueDeletedTest extends AbstractEventTestCase
      */
     public function testConstructorAndProperties(): void
     {
-        $event = new QueueDeleted($this->connection, $this->queue);
+        $event = new QueueDeleted($this->connection, $this->queue, $this->some_id);
 
         $this->assertSame($this->connection, $event->connection);
         $this->assertSame($this->queue, $event->queue);
+        $this->assertSame($this->some_id, $event->queue_id);
     }
 }

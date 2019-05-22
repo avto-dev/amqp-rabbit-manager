@@ -169,7 +169,7 @@ class RabbitSetupCommand extends Command
 
             if ($recreate === true) {
                 $this->warn("✖ Delete queue with ID [{$queue_id}]: <options=bold>{$name}</>");
-                $this->deleteQueue($connection, $queue);
+                $this->deleteQueue($connection, $queue, $queue_id);
             }
 
             $this->comment(\sprintf(
@@ -177,7 +177,7 @@ class RabbitSetupCommand extends Command
                 \http_build_query($queue->getArguments(), '', ', ')
             ));
 
-            $this->createQueue($connection, $queue);
+            $this->createQueue($connection, $queue, $queue_id);
         }
     }
 
@@ -186,16 +186,17 @@ class RabbitSetupCommand extends Command
      *
      * @param Connection $connection
      * @param Queue      $queue
+     * @param string $queue_id
      *
      * @return void
      */
-    protected function createQueue(Connection $connection, Queue $queue): void
+    protected function createQueue(Connection $connection, Queue $queue, string $queue_id): void
     {
-        $this->events->dispatch(new Events\QueueCreating($connection, $queue));
+        $this->events->dispatch(new Events\QueueCreating($connection, $queue, $queue_id));
 
         $connection->declareQueue($queue);
 
-        $this->events->dispatch(new Events\QueueCreated($connection, $queue));
+        $this->events->dispatch(new Events\QueueCreated($connection, $queue, $queue_id));
     }
 
     /**
@@ -203,16 +204,17 @@ class RabbitSetupCommand extends Command
      *
      * @param Connection $connection
      * @param Queue      $queue
+     * @param string $queue_id
      *
      * @return void
      */
-    protected function deleteQueue(Connection $connection, Queue $queue): void
+    protected function deleteQueue(Connection $connection, Queue $queue, string $queue_id): void
     {
-        $this->events->dispatch(new Events\QueueDeleting($connection, $queue));
+        $this->events->dispatch(new Events\QueueDeleting($connection, $queue, $queue_id));
 
         $connection->deleteQueue($queue);
 
-        $this->events->dispatch(new Events\QueueDeleted($connection, $queue));
+        $this->events->dispatch(new Events\QueueDeleted($connection, $queue, $queue_id));
     }
 
     /**
@@ -243,7 +245,7 @@ class RabbitSetupCommand extends Command
             if ($recreate === true) {
                 $this->warn("✖ Delete exchange with ID [{$exchange_id}]: <options=bold>{$name}</>");
 
-                $this->deleteExchange($connection, $exchange);
+                $this->deleteExchange($connection, $exchange, $exchange_id);
             }
 
             $this->comment(\sprintf(
@@ -251,7 +253,7 @@ class RabbitSetupCommand extends Command
                 \http_build_query($exchange->getArguments(), '', ', ')
             ));
 
-            $this->createExchange($connection, $exchange);
+            $this->createExchange($connection, $exchange, $exchange_id);
         }
     }
 
@@ -260,16 +262,17 @@ class RabbitSetupCommand extends Command
      *
      * @param Connection $connection
      * @param Exchange   $exchange
+     * @param string $exchange_id
      *
      * @return void
      */
-    protected function createExchange(Connection $connection, Exchange $exchange): void
+    protected function createExchange(Connection $connection, Exchange $exchange, string $exchange_id): void
     {
-        $this->events->dispatch(new Events\ExchangeCreating($connection, $exchange));
+        $this->events->dispatch(new Events\ExchangeCreating($connection, $exchange, $exchange_id));
 
         $connection->declareTopic($exchange);
 
-        $this->events->dispatch(new Events\ExchangeCreated($connection, $exchange));
+        $this->events->dispatch(new Events\ExchangeCreated($connection, $exchange, $exchange_id));
     }
 
     /**
@@ -277,16 +280,17 @@ class RabbitSetupCommand extends Command
      *
      * @param Connection $connection
      * @param Exchange   $exchange
+     * @param string $exchange_id
      *
      * @return void
      */
-    protected function deleteExchange(Connection $connection, Exchange $exchange): void
+    protected function deleteExchange(Connection $connection, Exchange $exchange, string $exchange_id): void
     {
-        $this->events->dispatch(new Events\ExchangeDeleting($connection, $exchange));
+        $this->events->dispatch(new Events\ExchangeDeleting($connection, $exchange, $exchange_id));
 
         $connection->deleteTopic($exchange);
 
-        $this->events->dispatch(new Events\ExchangeDeleted($connection, $exchange));
+        $this->events->dispatch(new Events\ExchangeDeleted($connection, $exchange, $exchange_id));
     }
 
     /**

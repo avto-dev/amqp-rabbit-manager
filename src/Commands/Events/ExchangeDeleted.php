@@ -20,14 +20,21 @@ final class ExchangeDeleted
     public $exchange;
 
     /**
+     * @var string
+     */
+    public $exchange_id;
+
+    /**
      * Create a new event instance.
      *
      * @param Connection $connection
      * @param Exchange   $exchange
+     * @param string     $exchange_id
      */
-    public function __construct(Connection $connection, Exchange $exchange)
+    public function __construct(Connection $connection, Exchange $exchange, string $exchange_id)
     {
-        $this->connection = $connection;
-        $this->exchange   = $exchange;
+        $this->connection  = $connection;
+        $this->exchange    = $exchange;
+        $this->exchange_id = $exchange_id;
     }
 }

@@ -16,9 +16,10 @@ class QueueCreatedTest extends AbstractEventTestCase
      */
     public function testConstructorAndProperties(): void
     {
-        $event = new QueueCreated($this->connection, $this->queue);
+        $event = new QueueCreated($this->connection, $this->queue, $this->some_id);
 
         $this->assertSame($this->connection, $event->connection);
         $this->assertSame($this->queue, $event->queue);
+        $this->assertSame($this->some_id, $event->queue_id);
     }
 }
