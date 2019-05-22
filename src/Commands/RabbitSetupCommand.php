@@ -186,7 +186,7 @@ class RabbitSetupCommand extends Command
      *
      * @param Connection $connection
      * @param Queue      $queue
-     * @param string $queue_id
+     * @param string     $queue_id
      *
      * @return void
      */
@@ -204,7 +204,7 @@ class RabbitSetupCommand extends Command
      *
      * @param Connection $connection
      * @param Queue      $queue
-     * @param string $queue_id
+     * @param string     $queue_id
      *
      * @return void
      */
@@ -262,7 +262,7 @@ class RabbitSetupCommand extends Command
      *
      * @param Connection $connection
      * @param Exchange   $exchange
-     * @param string $exchange_id
+     * @param string     $exchange_id
      *
      * @return void
      */
@@ -280,7 +280,7 @@ class RabbitSetupCommand extends Command
      *
      * @param Connection $connection
      * @param Exchange   $exchange
-     * @param string $exchange_id
+     * @param string     $exchange_id
      *
      * @return void
      */
