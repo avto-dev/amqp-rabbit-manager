@@ -107,9 +107,9 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     /**
      * @small
      *
-     * @return void
      * @throws Exception
      *
+     * @return void
      */
     public function testCommandCallWithoutArguments(): void
     {
@@ -145,9 +145,9 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     /**
      * @small
      *
-     * @return void
-     *
      * @throws Exception
+     *
+     * @return void
      */
     public function testCommandCallWithEmptyMap(): void
     {
@@ -197,9 +197,9 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     /**
      * @small
      *
-     * @return void
      * @throws Exception
      *
+     * @return void
      */
     public function testCommandCallWithRecreateAndForce(): void
     {
@@ -237,9 +237,9 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     /**
      * @small
      *
-     * @return void
      * @throws Exception
      *
+     * @return void
      */
     public function testPassingUnknownQueueIds(): void
     {
@@ -276,9 +276,9 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     /**
      * @small
      *
-     * @return void
      * @throws Exception
      *
+     * @return void
      */
     public function testPassingAllKnownQueueAndExchangeIds(): void
     {
