@@ -11,10 +11,10 @@ use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
 use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
 use AvtoDev\AmqpRabbitManager\Commands\RabbitSetupCommand;
 use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
-use AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleted;
 use AvtoDev\AmqpRabbitManager\Commands\Events\QueueCreated;
-use AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleting;
+use AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleted;
 use AvtoDev\AmqpRabbitManager\Commands\Events\QueueCreating;
+use AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleting;
 use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeCreated;
 use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeDeleted;
 use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeCreating;
@@ -106,9 +106,9 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     /**
      * @small
      *
-     * @return void
-     *
      * @throws Exception
+     *
+     * @return void
      */
     public function testCommandCallWithoutArguments(): void
     {
@@ -166,9 +166,9 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     /**
      * @small
      *
-     * @return void
-     *
      * @throws Exception
+     *
+     * @return void
      */
     public function testCommandCallWithRecreateAndForce(): void
     {
@@ -206,9 +206,9 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     /**
      * @small
      *
-     * @return void
-     *
      * @throws Exception
+     *
+     * @return void
      */
     public function testPassingUnknownQueueIds(): void
     {
@@ -245,9 +245,9 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     /**
      * @small
      *
-     * @return void
-     *
      * @throws Exception
+     *
+     * @return void
      */
     public function testPassingAllKnownQueueAndExchangeIds(): void
     {

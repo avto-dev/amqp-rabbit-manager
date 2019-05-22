@@ -12,7 +12,7 @@ use AvtoDev\AmqpRabbitManager\Commands\Events\QueueCreating;
 class QueueCreatingTest extends AbstractEventTestCase
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function testConstructorAndProperties(): void
     {

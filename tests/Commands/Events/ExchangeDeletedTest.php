@@ -12,7 +12,7 @@ use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeDeleted;
 class ExchangeDeletedTest extends AbstractEventTestCase
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function testConstructorAndProperties(): void
     {

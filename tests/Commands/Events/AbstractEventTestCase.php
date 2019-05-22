@@ -27,14 +27,7 @@ abstract class AbstractEventTestCase extends AbstractTestCase
     protected $connection;
 
     /**
-     * Test event constructor and public properties.
-     *
-     * @return void
-     */
-    abstract public function testConstructorAndProperties(): void;
-
-    /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setUp(): void
     {
@@ -46,4 +39,11 @@ abstract class AbstractEventTestCase extends AbstractTestCase
             'host' => '8.8.8.8',
         ]))->createContext();
     }
+
+    /**
+     * Test event constructor and public properties.
+     *
+     * @return void
+     */
+    abstract public function testConstructorAndProperties(): void;
 }
