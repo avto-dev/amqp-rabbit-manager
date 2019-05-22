@@ -9,12 +9,20 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 ### Added
 
 - Exchanges factory
-- Events: ...
+- `rabbit:setup` command events _(fired when calling command **only**)_:
+  - `QueueCreating`
+  - `QueueCreated`
+  - `ExchangeCreating`
+  - `ExchangeCreated`
+  - `QueueDeleting`
+  - `QueueDeleted`
+  - `ExchangeDeleting`
+  - `ExchangeDeleted`
 
 ### Changed
 
 - `setup` section in configuration file and "map" in `rabbit:setup` command
-- `rabbit:setup` command now creates exchanges
+- `rabbit:setup` command now creates exchanges (and allows `--exchange-id` argument)
 
 ### Fixed
 

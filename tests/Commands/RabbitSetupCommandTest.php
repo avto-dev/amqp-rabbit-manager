@@ -4,12 +4,21 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager\Tests\Commands;
 
-use Illuminate\Support\Arr;
+use Exception;
 use Illuminate\Support\Str;
 use AvtoDev\AmqpRabbitManager\ServiceProvider;
 use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
+use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
 use AvtoDev\AmqpRabbitManager\Commands\RabbitSetupCommand;
 use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
+use AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleted;
+use AvtoDev\AmqpRabbitManager\Commands\Events\QueueCreated;
+use AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleting;
+use AvtoDev\AmqpRabbitManager\Commands\Events\QueueCreating;
+use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeCreated;
+use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeDeleted;
+use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeCreating;
+use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeDeleting;
 
 /**
  * @covers \AvtoDev\AmqpRabbitManager\Commands\RabbitSetupCommand<extended>
@@ -51,16 +60,28 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
     protected $queues;
 
     /**
+     * @var ExchangesFactoryInterface
+     */
+    protected $exchanges;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->deleteAllQueues();
+        $this->connections = $this->app->make(ConnectionsFactoryInterface::class);
+        $this->queues      = $this->app->make(QueuesFactoryInterface::class);
+        $this->exchanges   = $this->app->make(ExchangesFactoryInterface::class);
 
-        $this->command   = $this->app->make(RabbitSetupCommand::class);
+        $this->unsetBroker();
+
         $this->setup_map = $this->config()->get(ServiceProvider::getConfigRootKeyName() . '.setup');
+
+        $this->command = $this->app->make(RabbitSetupCommand::class, [
+            'map' => $this->setup_map,
+        ]);
     }
 
     /**
@@ -78,31 +99,44 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
      */
     public function testMapInitialization(): void
     {
-        /** @var array $map */
-        $map = $this->getObjectAttribute($this->command, 'map');
-
         $this->assertNotEmpty($this->setup_map);
-        $this->assertSame($this->setup_map, $map);
+        $this->assertSame($this->setup_map, $this->command->getMap());
     }
 
     /**
      * @small
      *
      * @return void
+     *
+     * @throws Exception
      */
     public function testCommandCallWithoutArguments(): void
     {
+        $this->expectsEvents([
+            QueueCreating::class, QueueCreated::class, ExchangeCreating::class, ExchangeCreated::class,
+        ]);
+
+        $this->doesntExpectEvents([
+            QueueDeleting::class, QueueDeleted::class, ExchangeDeleting::class, ExchangeDeleted::class,
+        ]);
+
         $this->assertSame(0, $this->artisan($this->command_signature));
         $output = $this->console()->output();
 
-        foreach ($this->setup_map as $connection_name => $queue_ids) {
+        foreach ($this->setup_map as $connection_name => $settings) {
             $connection_name_safe = \preg_quote($connection_name, '/');
             $this->assertRegExp("~^.+connection.*{$connection_name_safe}.*$~ium", $output);
 
-            foreach ($queue_ids as $queue_id) {
+            foreach ($settings['queues'] as $queue_id) {
                 $queue_id_safe = \preg_quote($queue_id, '/');
-                $this->assertRegExp("~^.*Declare queue.+{$queue_id_safe}.*$~ium", $output);
+                $this->assertRegExp("~^.*Create queue.+{$queue_id_safe}.*$~ium", $output);
                 $this->assertNotRegExp("~^.*Delete queue.+{$queue_id_safe}.*$~ium", $output);
+            }
+
+            foreach ($settings['exchanges'] as $exchange_id) {
+                $exchange_id_safe = \preg_quote($exchange_id, '/');
+                $this->assertRegExp("~^.*Create exchange.+{$exchange_id_safe}.*$~ium", $output);
+                $this->assertNotRegExp("~^.*Delete exchange.+{$exchange_id_safe}.*$~ium", $output);
             }
         }
     }
@@ -114,6 +148,11 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
      */
     public function testCommandCallWithRecreateButWithoutForce(): void
     {
+        $this->doesntExpectEvents([
+            QueueCreating::class, QueueCreated::class, ExchangeCreating::class, ExchangeCreated::class,
+            QueueDeleting::class, QueueDeleted::class, ExchangeDeleting::class, ExchangeDeleted::class,
+        ]);
+
         $this->assertSame(0, $this->artisan($this->command_signature, [
             '--recreate' => true,
             //'--force'  => true,
@@ -128,9 +167,16 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
      * @small
      *
      * @return void
+     *
+     * @throws Exception
      */
     public function testCommandCallWithRecreateAndForce(): void
     {
+        $this->expectsEvents([
+            QueueCreating::class, QueueCreated::class, ExchangeCreating::class, ExchangeCreated::class,
+            QueueDeleting::class, QueueDeleted::class, ExchangeDeleting::class, ExchangeDeleted::class,
+        ]);
+
         $this->assertSame(0, $this->artisan($this->command_signature, [
             '--recreate' => true,
             '--force'    => true,
@@ -139,14 +185,20 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
 
         $this->assertNotRegExp('~data.+lost~i', $output); // Alert banner should not shown
 
-        foreach ($this->setup_map as $connection_name => $queue_ids) {
+        foreach ($this->setup_map as $connection_name => $settings) {
             $connection_name_safe = \preg_quote($connection_name, '/');
             $this->assertRegExp("~^.+connection.*{$connection_name_safe}.*$~ium", $output);
 
-            foreach ($queue_ids as $queue_id) {
+            foreach ($settings['queues'] as $queue_id) {
                 $queue_id_safe = \preg_quote($queue_id, '/');
+                $this->assertRegExp("~^.*Create queue.+{$queue_id_safe}.*$~ium", $output);
                 $this->assertRegExp("~^.*Delete queue.+{$queue_id_safe}.*$~ium", $output);
-                $this->assertRegExp("~^.*Declare queue.+{$queue_id_safe}.*$~ium", $output);
+            }
+
+            foreach ($settings['exchanges'] as $exchange_id) {
+                $exchange_id_safe = \preg_quote($exchange_id, '/');
+                $this->assertRegExp("~^.*Create exchange.+{$exchange_id_safe}.*$~ium", $output);
+                $this->assertRegExp("~^.*Delete exchange.+{$exchange_id_safe}.*$~ium", $output);
             }
         }
     }
@@ -155,49 +207,90 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
      * @small
      *
      * @return void
+     *
+     * @throws Exception
      */
     public function testPassingUnknownQueueIds(): void
     {
+        $this->doesntExpectEvents([
+            QueueCreating::class, QueueCreated::class, ExchangeCreating::class, ExchangeCreated::class,
+            QueueDeleting::class, QueueDeleted::class, ExchangeDeleting::class, ExchangeDeleted::class,
+        ]);
+
         $this->assertSame(0, $this->artisan($this->command_signature, [
-            '--queue-id' => [$random_queue_id = Str::random()],
+            '--queue-id'    => [$random_queue_id = Str::random()],
+            '--exchange-id' => [$random_exchange_id = Str::random()],
         ]));
         $output = $this->console()->output();
 
-        foreach ($this->setup_map as $connection_name => $queue_ids) {
+        foreach ($this->setup_map as $connection_name => $settings) {
             $connection_name_safe = \preg_quote($connection_name, '/');
             $this->assertRegExp("~^.+connection.*{$connection_name_safe}.*$~ium", $output);
 
-            foreach ($queue_ids as $queue_id) {
+            foreach ($settings['queues'] as $queue_id) {
                 $queue_id_safe = \preg_quote($queue_id, '/');
                 $this->assertRegExp("~^.*Skip.+{$queue_id_safe}.*$~ium", $output);
+            }
+
+            foreach ($settings['exchanges'] as $exchange_id) {
+                $exchange_id_safe = \preg_quote($exchange_id, '/');
+                $this->assertRegExp("~^.*Skip.+{$exchange_id_safe}.*$~ium", $output);
             }
         }
 
         $this->assertNotRegExp('~' . \preg_quote($random_queue_id, '/') . '~', $output);
+        $this->assertNotRegExp('~' . \preg_quote($random_exchange_id, '/') . '~', $output);
     }
 
     /**
      * @small
      *
      * @return void
+     *
+     * @throws Exception
      */
-    public function testPassingAllKnownQueueIds(): void
+    public function testPassingAllKnownQueueAndExchangeIds(): void
     {
-        $queue_ids = Arr::flatten($this->setup_map);
+        $this->expectsEvents([
+            QueueCreating::class, QueueCreated::class, ExchangeCreating::class, ExchangeCreated::class,
+        ]);
+
+        $this->doesntExpectEvents([
+            QueueDeleting::class, QueueDeleted::class, ExchangeDeleting::class, ExchangeDeleted::class,
+        ]);
+
+        $queue_ids = $exchange_ids = [];
+
+        foreach ($this->setup_map as $connection_name => $settings) {
+            foreach ($settings['queues'] as $queue_id) {
+                $queue_ids[] = $queue_id;
+            }
+
+            foreach ($settings['exchanges'] as $exchange_id) {
+                $exchange_ids[] = $exchange_id;
+            }
+        }
 
         $this->assertSame(0, $this->artisan($this->command_signature, [
-            '--queue-id' => $queue_ids,
+            '--queue-id'    => $queue_ids,
+            '--exchange-id' => $exchange_ids,
         ]));
         $output = $this->console()->output();
 
-        foreach ($this->setup_map as $connection_name => $queue_ids) {
+        foreach ($this->setup_map as $connection_name => $settings) {
             $connection_name_safe = \preg_quote($connection_name, '/');
             $this->assertRegExp("~^.+connection.*{$connection_name_safe}.*$~ium", $output);
 
-            foreach ($queue_ids as $queue_id) {
+            foreach ($settings['queues'] as $queue_id) {
                 $queue_id_safe = \preg_quote($queue_id, '/');
-                $this->assertRegExp("~^.*Declare queue.+{$queue_id_safe}.*$~ium", $output);
+                $this->assertRegExp("~^.*Create queue.+{$queue_id_safe}.*$~ium", $output);
                 $this->assertNotRegExp("~^.*Skip.+{$queue_id_safe}.*$~ium", $output);
+            }
+
+            foreach ($settings['exchanges'] as $exchange_id) {
+                $exchange_id_safe = \preg_quote($exchange_id, '/');
+                $this->assertRegExp("~^.*Create exchange.+{$exchange_id_safe}.*$~ium", $output);
+                $this->assertNotRegExp("~^.*Skip.+{$exchange_id_safe}.*$~ium", $output);
             }
         }
     }

@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace AvtoDev\AmqpRabbitManager\Tests;
 
 use Enqueue\AmqpExt\AmqpContext;
-use Interop\Amqp\Impl\AmqpQueue;
 use AvtoDev\AmqpRabbitManager\QueuesFactory;
 use AvtoDev\AmqpRabbitManager\ServiceProvider;
 use AvtoDev\AmqpRabbitManager\ExchangesFactory;
@@ -54,6 +53,16 @@ class ServiceProviderTest extends AbstractTestCase
     }
 
     /**
+     * @small
+     *
+     * @return void
+     */
+    public function testGetConfigRootKeyName(): void
+    {
+        $this->assertSame('rabbitmq', ServiceProvider::getConfigRootKeyName());
+    }
+
+    /**
      * @return void
      */
     public function testDiRegistration(): void
@@ -71,7 +80,33 @@ class ServiceProviderTest extends AbstractTestCase
     {
         $this->assertSame(\array_keys($this->config()->get("{$this->root}.connections")), $this->connections->names());
         $this->assertSame(\array_keys($this->config()->get("{$this->root}.queues")), $this->queues->ids());
-        $this->assertSame(\array_keys($this->config()->get("{$this->root}.queues")), $this->queues->ids());
+        $this->assertSame(\array_keys($this->config()->get("{$this->root}.exchanges")), $this->exchanges->ids());
+    }
+
+    /**
+     * @small
+     *
+     * @return void
+     */
+    public function testSetupMap(): void
+    {
+        $map = (array) $this->config()->get("{$this->root}.setup");
+
+        foreach ($map as $connection_name => $settings) {
+            $this->assertContains($connection_name, $this->connections->names());
+
+            $this->assertNotEmpty($settings['queues']);
+
+            foreach ($settings['queues'] as $queue_id) {
+                $this->assertContains($queue_id, $this->queues->ids());
+            }
+
+            $this->assertNotEmpty($settings['exchanges']);
+
+            foreach ($settings['exchanges'] as $exchanges_id) {
+                $this->assertContains($exchanges_id, $this->exchanges->ids());
+            }
+        }
     }
 
     /**
@@ -90,7 +125,30 @@ class ServiceProviderTest extends AbstractTestCase
     public function testQueuesCreating(): void
     {
         foreach (\array_keys($this->config()->get("{$this->root}.queues")) as $name) {
-            $this->assertInstanceOf(AmqpQueue::class, $this->queues->make($name));
+            $this->assertInstanceOf(\Interop\Amqp\Impl\AmqpQueue::class, $this->queues->make($name));
         }
+    }
+
+    /**
+     * @return void
+     */
+    public function testExchangesCreating(): void
+    {
+        foreach (\array_keys($this->config()->get("{$this->root}.exchanges")) as $name) {
+            $this->assertInstanceOf(\Interop\Amqp\Impl\AmqpTopic::class, $this->exchanges->make($name));
+        }
+    }
+
+    /**
+     * @small
+     *
+     * @return void
+     */
+    public function testRabbitSetupMapPassing(): void
+    {
+        /** @var RabbitSetupCommand $command */
+        $command = $this->app->make('command.rabbit.setup');
+
+        $this->assertSame($this->config()->get("{$this->root}.setup"), $command->getMap());
     }
 }

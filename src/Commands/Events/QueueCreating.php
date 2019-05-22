@@ -7,7 +7,7 @@ namespace AvtoDev\AmqpRabbitManager\Commands\Events;
 use Interop\Amqp\AmqpQueue as Queue;
 use Enqueue\AmqpExt\AmqpContext as Connection;
 
-class QueueCreating
+final class QueueCreating
 {
     /**
      * @var Connection

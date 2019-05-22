@@ -58,18 +58,6 @@ class FactoryException extends RuntimeException
     }
 
     /**
-     * @param string         $exchange_name
-     * @param int            $code
-     * @param Throwable|null $prev
-     *
-     * @return self
-     */
-    public static function exchangeNotExists(string $exchange_name, int $code = 0, ?Throwable $prev = null): self
-    {
-        return new static("RabbitMQ exchange [{$exchange_name}] does not exists", $code, $prev);
-    }
-
-    /**
      * @param string         $exchange_id
      * @param int            $code
      * @param Throwable|null $prev
@@ -79,5 +67,17 @@ class FactoryException extends RuntimeException
     public static function exchangeNameNotSet(string $exchange_id, int $code = 0, ?Throwable $prev = null): self
     {
         return new static("Exchange name for exchange with ID [{$exchange_id}] does not set", $code, $prev);
+    }
+
+    /**
+     * @param string         $exchange_name
+     * @param int            $code
+     * @param Throwable|null $prev
+     *
+     * @return self
+     */
+    public static function exchangeNotExists(string $exchange_name, int $code = 0, ?Throwable $prev = null): self
+    {
+        return new static("RabbitMQ exchange [{$exchange_name}] does not exists", $code, $prev);
     }
 }

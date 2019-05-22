@@ -94,6 +94,16 @@ class RabbitSetupCommand extends Command
     }
 
     /**
+     * Get settings map,
+     *
+     * @return array
+     */
+    public function getMap(): array
+    {
+        return $this->map;
+    }
+
+    /**
      * Execute the console command.
      *
      * @return int

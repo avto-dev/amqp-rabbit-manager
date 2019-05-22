@@ -7,7 +7,7 @@ namespace AvtoDev\AmqpRabbitManager\Commands\Events;
 use Interop\Amqp\AmqpTopic as Exchange;
 use Enqueue\AmqpExt\AmqpContext as Connection;
 
-class ExchangeDeleting
+final class ExchangeDeleting
 {
     /**
      * @var Connection

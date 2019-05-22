@@ -7,7 +7,7 @@ namespace AvtoDev\AmqpRabbitManager\Commands\Events;
 use Interop\Amqp\AmqpTopic as Exchange;
 use Enqueue\AmqpExt\AmqpContext as Connection;
 
-class ExchangeCreating
+final class ExchangeCreating
 {
     /**
      * @var Connection
