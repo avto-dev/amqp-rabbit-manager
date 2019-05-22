@@ -12,7 +12,7 @@ use AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleting;
 class QueueDeletingTest extends AbstractEventTestCase
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function testConstructorAndProperties(): void
     {

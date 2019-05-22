@@ -12,7 +12,7 @@ use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeCreated;
 class ExchangeCreatedTest extends AbstractEventTestCase
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function testConstructorAndProperties(): void
     {

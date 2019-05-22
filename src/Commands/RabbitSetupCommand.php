@@ -94,7 +94,7 @@ class RabbitSetupCommand extends Command
     }
 
     /**
-     * Get settings map,
+     * Get settings map,.
      *
      * @return array
      */

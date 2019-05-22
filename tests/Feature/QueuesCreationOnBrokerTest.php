@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace AvtoDev\AmqpRabbitManager\Tests\Feature;
 
 use Throwable;
-use Interop\Amqp\AmqpTopic;
 use Illuminate\Support\Str;
 use Interop\Amqp\AmqpQueue;
+use Interop\Amqp\AmqpTopic;
 use Interop\Amqp\Impl\AmqpBind;
 use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
 use AvtoDev\AmqpRabbitManager\Tests\AbstractTestCase;
@@ -53,9 +53,9 @@ class QueuesCreationOnBrokerTest extends AbstractTestCase
     /**
      * @medium
      *
-     * @return void
-     *
      * @throws Throwable
+     *
+     * @return void
      */
     public function testQueuesCreation(): void
     {

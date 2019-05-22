@@ -65,7 +65,7 @@ class ExchangesFactoryTest extends AbstractTestCase
         $exchange_2 = $this->factory->make($exchange_2_name = 'exchange-2');
 
         foreach ([$exchange_1_name => $exchange_1, $exchange_2_name => $exchange_2] as $name => $exchange) {
-            /** @var $exchange AmqpTopic */
+            /* @var $exchange AmqpTopic */
             $this->assertSame($this->exchanges_declaration[$name]['name'], $exchange->getTopicName());
             $this->assertSame($this->exchanges_declaration[$name]['type'], $exchange->getType());
             $this->assertSame($this->exchanges_declaration[$name]['flags'], $exchange->getFlags());
