@@ -138,7 +138,10 @@ Connects a queue to the exchange. So messages from that topic comes to the queue
 
 $connections
     ->default()
-    ->bind(new \Interop\Amqp\Impl\AmqpBind($exchanges->make('some-exchange-id'), $queues->make('some-queue-id')));
+    ->bind(new \Interop\Amqp\Impl\AmqpBind(
+        $exchanges->make('some-exchange-id'), 
+        $queues->make('some-queue-id')
+    ));
 ```
 
 ### Send message to exchange
