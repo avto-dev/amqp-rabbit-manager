@@ -53,9 +53,9 @@ class QueuesCreationOnBrokerTest extends AbstractTestCase
     /**
      * @medium
      *
-     * @return void
      * @throws Throwable
      *
+     * @return void
      */
     public function testQueuesCreation(): void
     {
