@@ -67,9 +67,9 @@ install:
   - composer info | grep -e laravel/laravel -e phpunit/phpunit -e phpstan/phpstan
 
 before_script:
-  - rabbitmqctl add_user $RABBIT_LOGIN $RABBIT_PASSWORD
-  - rabbitmqctl set_permissions $RABBIT_LOGIN ".*" ".*" ".*"
-  - rabbitmqctl set_topic_permissions $RABBIT_LOGIN ".*" ".*" ".*"
+  - sudo rabbitmqctl add_user $RABBIT_LOGIN $RABBIT_PASSWORD
+  - sudo rabbitmqctl set_permissions $RABBIT_LOGIN ".*" ".*" ".*"
+  - sudo rabbitmqctl set_topic_permissions $RABBIT_LOGIN ".*" ".*" ".*"
 
 script:
   - if [[ $coverage = 'true' ]]; then composer test-cover; else composer test; fi
