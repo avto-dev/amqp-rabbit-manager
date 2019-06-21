@@ -60,11 +60,11 @@ class QueuesCreationOnBrokerTest extends AbstractTestCase
     public function testQueuesCreation(): void
     {
         $this->connections->addFactory($connection_name = 'foo', [
-            'host'     => env('RABBIT_HOST', 'rabbitmq'),
-            'port'     => (int) env('RABBIT_PORT', 5672),
-            'vhost'    => env('RABBIT_VHOST', '/'),
-            'login'    => env('RABBIT_LOGIN', 'guest'),
-            'password' => env('RABBIT_PASSWORD', 'guest'),
+            'host'  => env('RABBIT_HOST', 'rabbitmq'),
+            'port'  => (int) env('RABBIT_PORT', 5672),
+            'vhost' => env('RABBIT_VHOST', '/'),
+            'user'  => env('RABBIT_LOGIN', 'guest'),
+            'pass'  => env('RABBIT_PASSWORD', 'guest'),
         ]);
         $connection = $this->connections->make($connection_name);
 

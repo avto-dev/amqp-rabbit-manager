@@ -9,17 +9,23 @@ cache:
 
 addons:
   apt:
+    sources:
+      - sourceline: deb https://packages.erlang-solutions.com/ubuntu trusty contrib
+        key_url: https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc
+      - sourceline: deb https://dl.bintray.com/rabbitmq/debian trusty main
+        key_url: https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc
     packages:
+      - esl-erlang=1:20.1
       - cmake
-
-services:
-  - rabbitmq
 
 env:
   global:
+    - RABBITMQ_VER=3.7.4
     - RABBIT_C_VER=0.9.0
     - PHP_AMQP_VER=1.9.4
     - RABBIT_HOST=127.0.0.1
+    - RABBIT_LOGIN=live111
+    - RABBIT_PASSWORD=evil222
     - setup=basic
     - coverage=false
     - laravel=default
@@ -32,6 +38,8 @@ branches:
     - /analysis-.*/
 
 before_install:
+  # Install RabbitMQ server
+  - sudo apt-get install rabbitmq-server=${RABBITMQ_VER}-1
   # Install rabbit-c
   - if [ ! -d "$HOME/rabbitmq-c/${RABBIT_C_VER}" ]; then
     travis_retry git clone --branch v${RABBIT_C_VER} https://github.com/alanxz/rabbitmq-c.git $HOME/rabbitmq-c/${RABBIT_C_VER};
@@ -46,6 +54,8 @@ before_install:
   - cd $TRAVIS_BUILD_DIR
   - composer global require hirak/prestissimo --update-no-dev
   - if [[ $coverage = 'false' ]]; then phpenv config-rm xdebug.ini || true; fi
+  # (Re)start rabbit
+  - sudo service rabbitmq-server restart && sudo rabbitmq-plugins list
 
 install:
   - if [[ $setup = 'basic'  ]]; then travis_retry composer update --prefer-dist --no-interaction --no-suggest; fi
@@ -55,6 +65,11 @@ install:
     travis_retry composer require --dev --update-with-dependencies --prefer-dist --no-interaction --no-suggest laravel/laravel "$laravel";
     fi
   - composer info | grep -e laravel/laravel -e phpunit/phpunit -e phpstan/phpstan
+
+before_script:
+  - sudo rabbitmqctl add_user $RABBIT_LOGIN $RABBIT_PASSWORD
+  - sudo rabbitmqctl set_permissions $RABBIT_LOGIN ".*" ".*" ".*"
+  - sudo rabbitmqctl set_topic_permissions $RABBIT_LOGIN ".*" ".*" ".*"
 
 script:
   - if [[ $coverage = 'true' ]]; then composer test-cover; else composer test; fi

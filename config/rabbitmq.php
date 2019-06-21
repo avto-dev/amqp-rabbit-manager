@@ -52,11 +52,11 @@ return [
     'connections' => [
 
         'rabbit-default' => [
-            'host'     => env('RABBIT_HOST', 'rabbitmq'),
-            'port'     => (int) env('RABBIT_PORT', 5672),
-            'vhost'    => env('RABBIT_VHOST', '/'),
-            'login'    => env('RABBIT_LOGIN', 'guest'),
-            'password' => env('RABBIT_PASSWORD', 'guest'),
+            'host'  => env('RABBIT_HOST', 'rabbitmq'),
+            'port'  => (int) env('RABBIT_PORT', 5672),
+            'vhost' => env('RABBIT_VHOST', '/'),
+            'user'  => env('RABBIT_LOGIN', 'guest'),
+            'pass'  => env('RABBIT_PASSWORD', 'guest'),
         ],
 
     ],
@@ -153,7 +153,7 @@ return [
 
     'setup' => [
         'rabbit-default' => [
-            'queues' => [
+            'queues'    => [
                 'some-queue-id',
             ],
             'exchanges' => [
