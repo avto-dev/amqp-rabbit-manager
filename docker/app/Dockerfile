@@ -1,6 +1,7 @@
 FROM composer:1.8.5 AS composer
 
-FROM php:7.1.3-alpine
+# for php 7.2.0 installed openssl-1.0 (instead openssl-1.1) and does not work with rabbitmq-c
+FROM php:7.2.23-alpine
 
 ENV \
     # <https://github.com/alanxz/rabbitmq-c>
@@ -35,22 +36,11 @@ RUN set -xe \
     && apk add --no-cache --virtual .build-deps ${RUNTIME_DEPS} \
     # workaround for rabbitmq linking issue
     && ln -s /usr/lib /usr/local/lib64 \
-    # this c-library is required for 'php-amqp'
-    && ( git clone --branch v${RABBITMQ_VERSION} https://github.com/alanxz/rabbitmq-c.git /tmp/rabbitmq \
-        && cd /tmp/rabbitmq \
-        && mkdir build && cd build \
-        && cmake .. \
-        && cmake --build . --target install ) \
-        && rm -Rf /tmp/rabbitmq \
-    && ( git clone --branch v${PHP_AMQP_VERSION} https://github.com/pdezwart/php-amqp.git /tmp/php-amqp \
-        && cd /tmp/php-amqp \
-        && phpize --clean \
-        && phpize \
-        && ./configure \
-        && make \
-        && make install \
-        && echo 'extension=amqp.so' > /usr/local/etc/php/conf.d/amqp.ini ) \
-        && rm -Rf /tmp/php-amqp \
+    # Install php-ext-amqp
+    && apk add --no-cache --no-progress --virtual BUILD_DEPS_PHP_AMQP rabbitmq-c-dev \
+    && apk add --no-cache --no-progress rabbitmq-c \
+    && pecl install amqp \
+    && docker-php-ext-enable amqp \
     # install xdebug (for testing with code coverage), but not enable it
     && pecl install xdebug-2.7.2 \
     && apk del .build-deps \
