@@ -42,11 +42,16 @@
     },
     "scripts": {
         "phpunit": "@php ./vendor/bin/phpunit --no-coverage",
+        "phpunit-without-external-services": "@php ./vendor/bin/phpunit --no-coverage --exclude-group usesExternalServices",
         "phpunit-cover": "@php ./vendor/bin/phpunit --coverage-html='./coverage/html'",
         "phpstan": "@php ./vendor/bin/phpstan analyze --no-progress --ansi --level=max ./src",
         "test": [
             "@phpstan",
             "@phpunit"
+        ],
+        "test-without-external-services": [
+            "@phpstan",
+            "@phpunit-without-external-services"
         ],
         "test-cover": [
             "@phpstan",

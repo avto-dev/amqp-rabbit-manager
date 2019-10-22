@@ -1,6 +1,7 @@
 FROM composer:1.8.5 AS composer
 
-FROM php:7.2.0-alpine
+# with php:7.2.0 an error occurs, the library libssl cannot be loaded
+FROM php:7.2.23-alpine
 
 ENV \
     OPENSSL_VERSION=1.1.0g \
@@ -48,11 +49,13 @@ RUN set -xe \
         && ./config no-async shared --prefix=/usr/local/ssl --openssldir=/usr/local/ssl -Wl,-rpath,/usr/local/ssl/lib \
         && make && make install \
         && cp /usr/local/ssl/bin/openssl /usr/bin/openssl \
-        && rm -rf "/usr/local/src/openssl-${OPENSSL_VERSION}.tar.gz" "/usr/local/src/openssl-${OPENSSL_VERSION}" \
-        && ln -s /usr/local/ssl/lib/libcrypto.so.1.1 /usr/lib/libcrypto.so.1.1 \
-        && ln -s /usr/local/ssl/lib/libssl.so.1.1 /usr/lib/libssl.so.1.1 \
+        && rm -rf "/usr/local/src/openssl-${OPENSSL_VERSION}.tar.gz" "/usr/local/src/openssl-${OPENSSL_VERSION}"
+
+#RUN ln -s /usr/local/ssl/lib/libcrypto.so.1.1 /usr/lib/libcrypto.so.1.1 \
+#        && ln -s /usr/local/ssl/lib/libssl.so.1.1 /usr/lib/libssl.so.1.1
+
     # this c-library is required for 'php-amqp'
-    && ( git clone --branch v${RABBITMQ_VERSION} https://github.com/alanxz/rabbitmq-c.git /tmp/rabbitmq \
+RUN ( git clone --branch v${RABBITMQ_VERSION} https://github.com/alanxz/rabbitmq-c.git /tmp/rabbitmq \
         && cd /tmp/rabbitmq \
         && mkdir build && cd build \
         && cmake -DCMAKE_C_FLAGS='-I/usr/local/ssl/include -L/usr/local/ssl/lib' \
