@@ -26,9 +26,9 @@ ENV RUNTIME_DEPS \
     file \
     re2c \
     g++ \
-    gcc \
-    coreutils \
-    linux-headers
+    gcc
+#    coreutils \
+#    linux-headers
 
 ENV PERMANENT_DEPS \
     # fix xdebug error "/usr/local/bin/docker-php-ext-enable: line 83: nm: not found"
