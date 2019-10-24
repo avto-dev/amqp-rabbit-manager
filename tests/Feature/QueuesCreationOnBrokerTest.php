@@ -18,6 +18,7 @@ use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
  * @group feature
  *
  * @coversNothing
+ * @group usesExternalServices
  */
 class QueuesCreationOnBrokerTest extends AbstractTestCase
 {

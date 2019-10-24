@@ -23,6 +23,8 @@ use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeDeleting;
 
 /**
  * @covers \AvtoDev\AmqpRabbitManager\Commands\RabbitSetupCommand<extended>
+ *
+ * @group usesExternalServices
  */
 class RabbitSetupCommandTest extends AbstractCommandTestCase
 {

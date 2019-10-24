@@ -1,6 +1,7 @@
 FROM composer:1.8.5 AS composer
 
-FROM php:7.1.3-alpine
+# with php:7.2.0 an error occurs, the library libssl cannot be loaded
+FROM php:7.2.23-alpine
 
 ENV \
     # <https://github.com/alanxz/rabbitmq-c>
@@ -59,6 +60,7 @@ RUN set -xe \
     && ln -s /usr/bin/composer /usr/bin/c \
     && chmod -R 777 ${COMPOSER_HOME} \
     && composer --version \
+    && openssl version \
     && php -v \
     && php -m
 
