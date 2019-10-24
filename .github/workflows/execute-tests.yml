@@ -43,6 +43,7 @@ jobs: # Docs: <https://help.github.com/en/articles/workflow-syntax-for-github-ac
         run: composer info | grep -e laravel/laravel -e phpunit/phpunit -e phpstan/phpstan
 
       - name: Execute phpstan
-          run: composer phpstan
+        run: composer phpstan
+
       - name: Execute phpunit
-          run: php ./vendor/bin/phpunit --no-coverage --exclude-group usesExternalServices
+        run: php ./vendor/bin/phpunit --no-coverage --exclude-group usesExternalServices
