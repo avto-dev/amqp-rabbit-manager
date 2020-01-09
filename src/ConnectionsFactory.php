@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager;
 
-use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 use Closure;
-use Enqueue\AmqpExt\AmqpConnectionFactory;
 use Enqueue\AmqpExt\AmqpContext;
 use Enqueue\AmqpTools\ConnectionConfig;
+use Enqueue\AmqpExt\AmqpConnectionFactory;
+use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 
 /**
  * @see \AvtoDev\AmqpRabbitManager\ServiceProvider::registerConnectionsFactory()

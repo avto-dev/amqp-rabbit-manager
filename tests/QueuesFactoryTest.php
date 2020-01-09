@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager\Tests;
 
-use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
-use AvtoDev\AmqpRabbitManager\QueuesFactory;
-use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
 use Illuminate\Support\Str;
 use Interop\Amqp\AmqpQueue;
+use AvtoDev\AmqpRabbitManager\QueuesFactory;
+use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
+use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 
 /**
  * @covers \AvtoDev\AmqpRabbitManager\QueuesFactory<extended>

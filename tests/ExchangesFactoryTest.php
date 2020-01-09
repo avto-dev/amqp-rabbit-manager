@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager\Tests;
 
-use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
-use AvtoDev\AmqpRabbitManager\ExchangesFactory;
-use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
 use Illuminate\Support\Str;
 use Interop\Amqp\AmqpTopic;
+use AvtoDev\AmqpRabbitManager\ExchangesFactory;
+use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
+use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 
 /**
  * @covers \AvtoDev\AmqpRabbitManager\ExchangesFactory<extended>

@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager;
 
-use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 class ServiceProvider extends IlluminateServiceProvider
