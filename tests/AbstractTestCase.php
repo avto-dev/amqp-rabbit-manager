@@ -2,13 +2,13 @@
 
 namespace AvtoDev\AmqpRabbitManager\Tests;
 
-use Illuminate\Foundation\Application;
-use Illuminate\Contracts\Console\Kernel;
-use AvtoDev\AmqpRabbitManager\ServiceProvider;
-use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
-use Illuminate\Config\Repository as ConfigRepository;
-use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
 use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
+use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
+use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
+use AvtoDev\AmqpRabbitManager\ServiceProvider;
+use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class AbstractTestCase extends BaseTestCase

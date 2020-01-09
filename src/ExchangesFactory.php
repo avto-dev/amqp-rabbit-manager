@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager;
 
+use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 use Closure;
 use Interop\Amqp\AmqpTopic;
-use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 
 /**
  * @see \AvtoDev\AmqpRabbitManager\ServiceProvider::registerExchangesFactory()

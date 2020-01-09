@@ -4,16 +4,16 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager\Commands;
 
+use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
+use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
+use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
+use Enqueue\AmqpExt\AmqpContext as Connection;
 use Illuminate\Console\Command;
-use Interop\Amqp\AmqpQueue as Queue;
-use Interop\Amqp\AmqpTopic as Exchange;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Contracts\Events\Dispatcher;
-use Enqueue\AmqpExt\AmqpContext as Connection;
+use Interop\Amqp\AmqpQueue as Queue;
+use Interop\Amqp\AmqpTopic as Exchange;
 use Symfony\Component\Console\Input\InputOption;
-use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
-use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
-use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
 
 class RabbitSetupCommand extends Command
 {

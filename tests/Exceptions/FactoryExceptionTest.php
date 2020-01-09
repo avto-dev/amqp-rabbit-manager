@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager\Tests\Exceptions;
 
-use AvtoDev\AmqpRabbitManager\Tests\AbstractTestCase;
 use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
+use AvtoDev\AmqpRabbitManager\Tests\AbstractTestCase;
 
 /**
  * @covers \AvtoDev\AmqpRabbitManager\Exceptions\FactoryException<extended>

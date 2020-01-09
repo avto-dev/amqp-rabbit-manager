@@ -2,8 +2,8 @@
 
 namespace AvtoDev\AmqpRabbitManager;
 
-use Interop\Amqp\AmqpQueue;
 use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
+use Interop\Amqp\AmqpQueue;
 
 /**
  * @see \AvtoDev\AmqpRabbitManager\QueuesFactory
