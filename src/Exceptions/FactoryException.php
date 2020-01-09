@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager\Exceptions;
 
-use Throwable;
 use RuntimeException;
+use Throwable;
 
 class FactoryException extends RuntimeException
 {
