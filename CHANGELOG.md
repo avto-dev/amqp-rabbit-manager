@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## UNRELEASED
+
+### Changed
+
+- Updated version of `rabbitmq-c` lib in docker container to `v0.10.0`
+- Enabled `length_ordered_imports` rule for `StyleCI`
+- Disabled `alpha_ordered_imports` rule for `StyleCI`
+
 ## v2.1.0
 
 ### Changed
