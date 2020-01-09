@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager\Commands\Events;
 
-use Enqueue\AmqpExt\AmqpContext as Connection;
 use Interop\Amqp\AmqpTopic as Exchange;
+use Enqueue\AmqpExt\AmqpContext as Connection;
 
 final class ExchangeDeleting
 {

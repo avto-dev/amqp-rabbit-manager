@@ -4,22 +4,22 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager\Tests\Commands;
 
-use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeCreated;
-use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeCreating;
-use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeDeleted;
-use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeDeleting;
-use AvtoDev\AmqpRabbitManager\Commands\Events\QueueCreated;
-use AvtoDev\AmqpRabbitManager\Commands\Events\QueueCreating;
-use AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleted;
-use AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleting;
+use Exception;
+use Illuminate\Support\Str;
+use Illuminate\Contracts\Console\Kernel;
+use AvtoDev\AmqpRabbitManager\ServiceProvider;
+use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
+use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
 use AvtoDev\AmqpRabbitManager\Commands\RabbitSetupCommand;
 use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
-use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
-use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
-use AvtoDev\AmqpRabbitManager\ServiceProvider;
-use Exception;
-use Illuminate\Contracts\Console\Kernel;
-use Illuminate\Support\Str;
+use AvtoDev\AmqpRabbitManager\Commands\Events\QueueCreated;
+use AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleted;
+use AvtoDev\AmqpRabbitManager\Commands\Events\QueueCreating;
+use AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleting;
+use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeCreated;
+use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeDeleted;
+use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeCreating;
+use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeDeleting;
 
 /**
  * @covers \AvtoDev\AmqpRabbitManager\Commands\RabbitSetupCommand<extended>

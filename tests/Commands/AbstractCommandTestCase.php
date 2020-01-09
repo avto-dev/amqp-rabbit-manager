@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager\Tests\Commands;
 
-use AvtoDev\AmqpRabbitManager\Tests\AbstractTestCase;
 use Illuminate\Contracts\Console\Kernel;
+use AvtoDev\AmqpRabbitManager\Tests\AbstractTestCase;
 
 abstract class AbstractCommandTestCase extends AbstractTestCase
 {

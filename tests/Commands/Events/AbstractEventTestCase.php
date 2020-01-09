@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager\Tests\Commands\Events;
 
-use AvtoDev\AmqpRabbitManager\Tests\AbstractTestCase;
-use Enqueue\AmqpExt\AmqpContext as Connection;
 use Illuminate\Support\Str;
 use Interop\Amqp\AmqpQueue as Queue;
 use Interop\Amqp\AmqpTopic as Exchange;
+use Enqueue\AmqpExt\AmqpContext as Connection;
+use AvtoDev\AmqpRabbitManager\Tests\AbstractTestCase;
 
 abstract class AbstractEventTestCase extends AbstractTestCase
 {

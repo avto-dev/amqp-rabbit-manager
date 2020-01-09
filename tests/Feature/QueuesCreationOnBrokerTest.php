@@ -4,15 +4,15 @@ declare(strict_types = 1);
 
 namespace AvtoDev\AmqpRabbitManager\Tests\Feature;
 
-use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
-use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
-use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
-use AvtoDev\AmqpRabbitManager\Tests\AbstractTestCase;
+use Throwable;
 use Illuminate\Support\Str;
 use Interop\Amqp\AmqpQueue;
 use Interop\Amqp\AmqpTopic;
 use Interop\Amqp\Impl\AmqpBind;
-use Throwable;
+use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
+use AvtoDev\AmqpRabbitManager\Tests\AbstractTestCase;
+use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
+use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
 
 /**
  * @group feature
