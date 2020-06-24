@@ -57,10 +57,10 @@ jobs: # Docs: <https://git.io/JvxXE>
 
       - name: Start RabbitMQ server
         run: |
-          docker run --rm -d
-            -p "$RABBIT_PORT:5672/tcp"
-            -e "RABBITMQ_DEFAULT_USER=$RABBIT_LOGIN"
-            -e "RABBITMQ_DEFAULT_PASS=$RABBIT_PASSWORD"
+          docker run --rm -d \
+            -p "$RABBIT_PORT:5672/tcp" \
+            -e "RABBITMQ_DEFAULT_USER=$RABBIT_LOGIN" \
+            -e "RABBITMQ_DEFAULT_PASS=$RABBIT_PASSWORD" \
             rabbitmq:3.7-alpine
 
       - name: Get Composer Cache Directory # Docs: <https://git.io/JfAKn#php---composer>
