@@ -7,7 +7,7 @@ namespace AvtoDev\AmqpRabbitManager\Exceptions;
 use Throwable;
 use RuntimeException;
 
-class FactoryException extends RuntimeException
+final class FactoryException extends RuntimeException
 {
     /**
      * @param string         $connection_name

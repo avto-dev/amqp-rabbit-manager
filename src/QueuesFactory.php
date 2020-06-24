@@ -14,14 +14,14 @@ use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 class QueuesFactory implements QueuesFactoryInterface
 {
     /**
-     * @var array|Closure[]
+     * @var array<Closure>
      */
     protected $factories = [];
 
     /**
      * QueuesFactory constructor.
      *
-     * @param array $queues
+     * @param array<string, array<string, mixed>> $queues
      */
     public function __construct(array $queues)
     {

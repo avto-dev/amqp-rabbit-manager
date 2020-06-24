@@ -18,12 +18,12 @@ class ConnectionsFactory implements ConnectionsFactoryInterface
     /**
      * Connection factories array, where key is connection name, and value - is factory instance.
      *
-     * @var array|Closure[]
+     * @var array<Closure>
      */
     protected $connection_factories = [];
 
     /**
-     * @var array|Closure[]
+     * @var array<Closure>
      */
     protected $context_factories = [];
 
@@ -35,17 +35,17 @@ class ConnectionsFactory implements ConnectionsFactoryInterface
     protected $default_name;
 
     /**
-     * @var array
+     * @var array<string, mixed>
      */
     protected $connection_defaults;
 
     /**
      * RabbitMqManager constructor.
      *
-     * @param array       $connections_settings Array with connection settings,
-     *                                          eg: `['connection-name' => [ ..options.. ], ]`
-     * @param array       $connection_defaults  Default connection settings
-     * @param string|null $default              Default connection name
+     * @param array<string, array<string, mixed>> $connections_settings Array with connection settings,
+     *                                                                  eg: `['connection-name' => [ ..options.. ], ]`
+     * @param array<string, mixed>                $connection_defaults  Default connection settings
+     * @param string|null                         $default              Default connection name
      */
     public function __construct(array $connections_settings, array $connection_defaults = [], ?string $default = null)
     {

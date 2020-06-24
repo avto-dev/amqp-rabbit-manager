@@ -45,7 +45,7 @@ class RabbitSetupCommand extends Command
      * ]
      * ```
      *
-     * @var array
+     * @var array<string, array<string, array<string>>>
      */
     protected $map = [];
 
@@ -72,11 +72,11 @@ class RabbitSetupCommand extends Command
     /**
      * {@inheritdoc}
      *
-     * @param Dispatcher                  $events
-     * @param ConnectionsFactoryInterface $connections
-     * @param QueuesFactoryInterface      $queues
-     * @param ExchangesFactoryInterface   $exchanges
-     * @param array                       $map
+     * @param Dispatcher                                  $events
+     * @param ConnectionsFactoryInterface                 $connections
+     * @param QueuesFactoryInterface                      $queues
+     * @param ExchangesFactoryInterface                   $exchanges
+     * @param array<string, array<string, array<string>>> $map
      */
     public function __construct(Dispatcher $events,
                                 ConnectionsFactoryInterface $connections,
@@ -96,7 +96,7 @@ class RabbitSetupCommand extends Command
     /**
      * Get settings map,.
      *
-     * @return array
+     * @return array<string, array<string, array<string>>>
      */
     public function getMap(): array
     {
@@ -145,10 +145,10 @@ class RabbitSetupCommand extends Command
     /**
      * Make passed queues using connection.
      *
-     * @param Connection $connection RabbitMq connection instance
-     * @param array      $queue_ids  Array of queue IDs
-     * @param array|null $only       Work only with passed queue IDs (may be skipped)
-     * @param bool       $recreate   It says - we should delete queue first
+     * @param Connection         $connection RabbitMq connection instance
+     * @param array<string>      $queue_ids  Array of queue IDs
+     * @param array<string>|null $only       Work only with passed queue IDs (may be skipped)
+     * @param bool               $recreate   It says - we should delete queue first
      *
      * @return void
      */
@@ -220,10 +220,10 @@ class RabbitSetupCommand extends Command
     /**
      * Make passed exchanges using connection.
      *
-     * @param Connection $connection   RabbitMq connection instance
-     * @param array      $exchange_ids Array of exchange IDs
-     * @param array|null $only         Work only with passed exchange IDs (may be skipped)
-     * @param bool       $recreate     It says - we should delete exchange first
+     * @param Connection         $connection   RabbitMq connection instance
+     * @param array<string>      $exchange_ids Array of exchange IDs
+     * @param array<string>|null $only         Work only with passed exchange IDs (may be skipped)
+     * @param bool               $recreate     It says - we should delete exchange first
      *
      * @return void
      */
@@ -296,7 +296,7 @@ class RabbitSetupCommand extends Command
     /**
      * Get queue IDs.
      *
-     * @return array|null
+     * @return array<string>|null
      */
     protected function getQueueIds(): ?array
     {
@@ -304,7 +304,7 @@ class RabbitSetupCommand extends Command
             $ids = $this->option($option_name);
 
             if (\is_array($ids) && ! empty($ids)) {
-                return \array_values($ids);
+                return \array_filter(\array_values($ids), '\\is_string');
             }
         }
 
@@ -314,7 +314,7 @@ class RabbitSetupCommand extends Command
     /**
      * Get exchange IDs.
      *
-     * @return array|null
+     * @return array<string>|null
      */
     protected function getExchangeIds(): ?array
     {
@@ -322,7 +322,7 @@ class RabbitSetupCommand extends Command
             $ids = $this->option($option_name);
 
             if (\is_array($ids) && ! empty($ids)) {
-                return \array_values($ids);
+                return \array_filter(\array_values($ids), '\\is_string');
             }
         }
 

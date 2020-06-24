@@ -20,7 +20,7 @@ abstract class AbstractTestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->app->register(ServiceProvider::class);
+        $this->app->register(ServiceProvider::class); // @todo: remove this line?
     }
 
     /**

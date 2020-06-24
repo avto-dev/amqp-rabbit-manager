@@ -4,13 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
-## UNRELEASED
+## v2.2.0
 
 ### Changed
 
-- Updated version of `rabbitmq-c` lib in docker container to `v0.10.0`
-- Enabled `length_ordered_imports` rule for `StyleCI`
-- Disabled `alpha_ordered_imports` rule for `StyleCI`
+- Version of `rabbitmq-c` lib in docker container updated up to `0.10.0`
+- Version of `php-amqp` lib in docker container updated up to `1.10.2`
+- Class `FactoryException` finalized
 
 ## v2.1.0
 

@@ -1,18 +1,18 @@
 version: '3.2'
 
-networks:
-  app-network:
-    driver: bridge
-
 volumes:
   rabbit-data:
   composer-data:
+
+networks:
+  app-network:
+    driver: bridge
 
 services:
   app:
     build:
       context: .
-      dockerfile: ./docker/app/Dockerfile
+      dockerfile: Dockerfile
     volumes:
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro

@@ -13,15 +13,15 @@ interface ExchangesFactoryInterface
     /**
      * Get all available exchange IDs.
      *
-     * @return array|string[]
+     * @return array<string>
      */
     public function ids(): array;
 
     /**
      * Add exchange factory.
      *
-     * @param string $exchange_id
-     * @param array  $settings
+     * @param string               $exchange_id
+     * @param array<string, mixed> $settings
      *
      * @return void
      */

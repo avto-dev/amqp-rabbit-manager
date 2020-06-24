@@ -13,15 +13,15 @@ interface QueuesFactoryInterface
     /**
      * Get all available queue IDs.
      *
-     * @return array|string[]
+     * @return array<string>
      */
     public function ids(): array;
 
     /**
      * Add queue factory.
      *
-     * @param string $queue_id
-     * @param array  $settings
+     * @param string               $queue_id
+     * @param array<string, mixed> $settings
      *
      * @return void
      */

@@ -16,7 +16,6 @@ return [
     | @link <https://git.io/fjtN0> \Enqueue\AmqpTools\ConnectionConfig
     |
     */
-
     'connection_defaults' => [
         'host'               => 'localhost', // The host to connect
         'port'               => 5672,    // Port on the host
@@ -48,7 +47,6 @@ return [
     | Key is connection name, and value is its configuration.
     |
     */
-
     'connections' => [
 
         'rabbit-default' => [
@@ -69,7 +67,6 @@ return [
     | Connection name, that will be used by default.
     |
     */
-
     'default_connection' => 'rabbit-default',
 
     /*
@@ -82,7 +79,6 @@ return [
     | Flags: <https://www.rabbitmq.com/amqp-0-9-1-reference.html#class.queue>
     |
     */
-
     'queues' => [
 
         'some-queue-id' => [
@@ -120,7 +116,6 @@ return [
     | Flags: <https://www.rabbitmq.com/amqp-0-9-1-reference.html#class.exchange>
     |
     */
-
     'exchanges' => [
 
         'some-exchange-id' => [
@@ -134,7 +129,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Setup Broker Settings
+    | Broker Setup Settings
     |--------------------------------------------------------------------------
     |
     | Command 'rabbit:setup' uses next configuration for creating queues and
@@ -150,7 +145,6 @@ return [
     | ]
     |
     */
-
     'setup' => [
         'rabbit-default' => [
             'queues'    => [

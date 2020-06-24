@@ -12,7 +12,7 @@ interface ConnectionsFactoryInterface
     /**
      * Get all available connection names.
      *
-     * @return array|string[]
+     * @return array<string>
      */
     public function names(): array;
 
@@ -21,8 +21,8 @@ interface ConnectionsFactoryInterface
      *
      * IMPORTANT: Passed settings should follows current used RabbitMQ client settings format!
      *
-     * @param string $name
-     * @param array  $settings
+     * @param string               $name
+     * @param array<string, mixed> $settings
      *
      * @return void
      */

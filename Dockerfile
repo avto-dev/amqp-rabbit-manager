@@ -1,41 +1,33 @@
-FROM composer:1.8.5 AS composer
-
-# with php:7.2.0 an error occurs, the library libssl cannot be loaded
 FROM php:7.2.23-alpine
 
 ENV \
     # <https://github.com/alanxz/rabbitmq-c>
     RABBITMQ_VERSION="0.10.0" \
     # ext-amqp <https://github.com/pdezwart/php-amqp>
-    PHP_AMQP_VERSION="1.9.4" \
+    PHP_AMQP_VERSION="1.10.2" \
     COMPOSER_ALLOW_SUPERUSER="1" \
     COMPOSER_HOME="/tmp/composer"
 
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY --from=composer:1.10.7 /usr/bin/composer /usr/bin/composer
 
-ENV RUNTIME_DEPS \
-    openssl-dev \
-    autoconf \
-    pkgconf \
-    cmake \
-    unzip \
-    curl \
-    make \
-    file \
-    re2c \
-    g++ \
-    gcc
-
-ENV PERMANENT_DEPS \
-    # fix xdebug error "/usr/local/bin/docker-php-ext-enable: line 83: nm: not found"
-    binutils \
-    git
-
-RUN set -xe \
-    && apk add --no-cache ${PERMANENT_DEPS} \
-    && apk add --no-cache --virtual .build-deps ${RUNTIME_DEPS} \
+RUN set -x \
+    && apk add --no-cache binutils git \
+    && apk add --no-cache --virtual .build-deps \
+        openssl-dev \
+        autoconf \
+        pkgconf \
+        cmake \
+        unzip \
+        curl \
+        make \
+        file \
+        re2c \
+        g++ \
+        gcc 1>/dev/null \
     # workaround for rabbitmq linking issue
     && ln -s /usr/lib /usr/local/lib64 \
+    # install xdebug (for testing with code coverage), but do not enable it
+    && pecl install xdebug-2.9.1 1>/dev/null \
     # this c-library is required for 'php-amqp'
     && ( git clone --branch v${RABBITMQ_VERSION} https://github.com/alanxz/rabbitmq-c.git /tmp/rabbitmq \
         && cd /tmp/rabbitmq \
@@ -52,18 +44,13 @@ RUN set -xe \
         && make install \
         && echo 'extension=amqp.so' > /usr/local/etc/php/conf.d/amqp.ini ) \
         && rm -Rf /tmp/php-amqp \
-    # install xdebug (for testing with code coverage), but not enable it
-    && pecl install xdebug-2.7.2 \
     && apk del .build-deps \
     && mkdir /src ${COMPOSER_HOME} \
     && composer global require 'hirak/prestissimo' --no-interaction --no-suggest --prefer-dist \
     && ln -s /usr/bin/composer /usr/bin/c \
     && chmod -R 777 ${COMPOSER_HOME} \
     && composer --version \
-    && openssl version \
     && php -v \
     && php -m
 
 WORKDIR /src
-
-VOLUME ["/src"]
