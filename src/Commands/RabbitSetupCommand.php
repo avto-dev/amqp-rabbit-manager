@@ -70,7 +70,7 @@ class RabbitSetupCommand extends Command
     protected $exchanges;
 
     /**
-     * {@inheritdoc}
+     * Create a new console command instance.
      *
      * @param Dispatcher                                  $events
      * @param ConnectionsFactoryInterface                 $connections

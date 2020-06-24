@@ -50,7 +50,7 @@ return [
     'connections' => [
 
         'rabbit-default' => [
-            'host'  => env('RABBIT_HOST', 'rabbitmq'),
+            'host'  => env('RABBIT_HOST', '127.0.0.1'),
             'port'  => (int) env('RABBIT_PORT', 5672),
             'vhost' => env('RABBIT_VHOST', '/'),
             'user'  => env('RABBIT_LOGIN', 'guest'),

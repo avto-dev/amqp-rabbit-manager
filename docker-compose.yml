@@ -18,6 +18,9 @@ services:
       - /etc/group:/etc/group:ro
       - .:/src:cached
       - composer-data:/tmp/composer:cached
+    environment:
+      RABBIT_HOST: rabbitmq
+      RABBIT_PORT: 5672
     depends_on:
       - rabbitmq
     networks:

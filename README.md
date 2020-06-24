@@ -287,8 +287,6 @@ $ make latest # or 'make lowest'
 $ make test
 ```
 
-> Do not forget to start services, declared in `docker-compose.yml` file before (execute `make up` before tests and `make down` after)
-
 ## Changes log
 
 [![Release date][badge_release_date]][link_releases]
