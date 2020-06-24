@@ -94,7 +94,7 @@ jobs: # Docs: <https://git.io/JvxXE>
 
       - name: Install specific phpunit version
         if: matrix.phpunit != 'default'
-        run: composer require --dev --update-with-dependencies --prefer-dist --no-suggest --ansi phpunit/phpunit "${{ matrix.phpunit }}"
+        run: composer require --dev --update-with-all-dependencies --prefer-dist --no-suggest --ansi phpunit/phpunit "${{ matrix.phpunit }}"
 
       - name: Show most important packages versions
         run: composer info | grep -e laravel -e phpunit -e phpstan
