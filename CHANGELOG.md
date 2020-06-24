@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 - Version of `rabbitmq-c` lib in docker container updated up to `0.10.0`
 - Version of `php-amqp` lib in docker container updated up to `1.10.2`
 - Class `FactoryException` finalized
+- Minimal `symfony/console` version now is `^4.4` _(reason: <https://github.com/symfony/symfony/issues/32750>)_
+- CI completely moved from "Travis CI" to "Github Actions" _(travis builds disabled)_
 
 ## v2.1.0
 

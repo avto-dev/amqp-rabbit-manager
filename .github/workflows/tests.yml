@@ -49,14 +49,19 @@ jobs: # Docs: <https://git.io/JvxXE>
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Start RabbitMQ server
-        run: docker run -d -p "$RABBIT_PORT:5672/tcp" -e "RABBITMQ_DEFAULT_USER=$RABBIT_LOGIN" -e "RABBITMQ_DEFAULT_PASS=$RABBIT_PASSWORD" rabbitmq:3.7-alpine
-
       - name: Setup PHP, with composer and extensions
         uses: shivammathur/setup-php@v2 # Action page: <https://github.com/shivammathur/setup-php>
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring
+
+      - name: Start RabbitMQ server
+        run: |
+          docker run --rm -d
+            -p "$RABBIT_PORT:5672/tcp"
+            -e "RABBITMQ_DEFAULT_USER=$RABBIT_LOGIN"
+            -e "RABBITMQ_DEFAULT_PASS=$RABBIT_PASSWORD"
+            rabbitmq:3.7-alpine
 
       - name: Get Composer Cache Directory # Docs: <https://git.io/JfAKn#php---composer>
         id: composer-cache
