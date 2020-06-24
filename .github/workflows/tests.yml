@@ -26,6 +26,7 @@ jobs: # Docs: <https://git.io/JvxXE>
       matrix:
         setup: [basic, lowest]
         laravel: [default]
+        phpunit: [default]
         coverage: [yes]
         php: ['7.2', '7.3', '7.4']
         include:
