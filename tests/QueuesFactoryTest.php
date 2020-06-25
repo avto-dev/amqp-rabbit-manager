@@ -21,7 +21,7 @@ class QueuesFactoryTest extends AbstractTestCase
     protected $factory;
 
     /**
-     * @var mixed[]
+     * @var array<string, array<string, mixed>>
      */
     protected $queues_declaration = [
         'queue-1' => [

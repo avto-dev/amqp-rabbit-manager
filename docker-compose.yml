@@ -1,23 +1,26 @@
 version: '3.2'
 
-networks:
-  app-network:
-    driver: bridge
-
 volumes:
   rabbit-data:
   composer-data:
+
+networks:
+  app-network:
+    driver: bridge
 
 services:
   app:
     build:
       context: .
-      dockerfile: ./docker/app/Dockerfile
+      dockerfile: Dockerfile
     volumes:
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
       - .:/src:cached
       - composer-data:/tmp/composer:cached
+    environment:
+      RABBIT_HOST: rabbitmq
+      RABBIT_PORT: 5672
     depends_on:
       - rabbitmq
     networks:

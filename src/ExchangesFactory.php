@@ -14,14 +14,14 @@ use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 class ExchangesFactory implements ExchangesFactoryInterface
 {
     /**
-     * @var array|Closure[]
+     * @var array<Closure>
      */
     protected $factories = [];
 
     /**
      * ExchangesFactory constructor.
      *
-     * @param array $exchanges
+     * @param array<string, array<string, mixed>> $exchanges
      */
     public function __construct(array $exchanges)
     {

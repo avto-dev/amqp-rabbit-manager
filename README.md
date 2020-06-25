@@ -5,10 +5,9 @@
 # RabbitMQ manager for Laravel applications
 
 [![Version][badge_packagist_version]][link_packagist]
-[![Version][badge_php_version]][link_packagist]
+[![PHP Version][badge_php_version]][link_packagist]
 [![Build Status][badge_build_status]][link_build_status]
 [![Coverage][badge_coverage]][link_coverage]
-[![Code quality][badge_code_quality]][link_code_quality]
 [![Downloads count][badge_downloads_count]][link_packagist]
 [![License][badge_license]][link_license]
 
@@ -27,29 +26,6 @@ $ composer require avto-dev/amqp-rabbit-manager "^2.0"
 > Installed `composer` is required ([how to install composer][getcomposer]).
 
 > You need to fix the major version of package.
-
-Laravel 5.5 and above uses Package Auto-Discovery, so doesn't require you to manually register the service-provider. Otherwise you must add the service provider to the `providers` array in `./config/app.php`:
-
-```php
-'providers' => [
-    // ...
-    AvtoDev\AmqpRabbitManager\ServiceProvider::class,
-]
-```
-
-> If you wants to disable package service-provider auto discover, just add into your `composer.json` next lines:
->
-> ```json
-> {
->     "extra": {
->         "laravel": {
->             "dont-discover": [
->                 "avto-dev/amqp-rabbit-manager"
->             ]
->         }
->     }
-> }
-> ```
 
 After that you should "publish" package configuration file using next command:
 
@@ -80,7 +56,7 @@ class SomeCommand extends \Illuminate\Console\Command
      * @var string
      */
     protected $name = 'some:command';
-    
+
     /**
      * Execute the console command.
      *
@@ -139,7 +115,7 @@ Connects a queue to the exchange. So messages from that topic comes to the queue
 $connections
     ->default()
     ->bind(new \Interop\Amqp\Impl\AmqpBind(
-        $exchanges->make('some-exchange-id'), 
+        $exchanges->make('some-exchange-id'),
         $queues->make('some-queue-id')
     ));
 ```
@@ -240,11 +216,11 @@ $message = $consumer->receive();
 
 try {
     // .. process a message ..
-    
+
     $consumer->acknowledge($message);
 } catch (\Exception $e) {
     // .. process exception ..
-    
+
     $consumer->reject($message);
 }
 ```
@@ -265,20 +241,20 @@ $consumer   = $connection->createConsumer($queue);
 $subscriber = $connection->createSubscriptionConsumer();
 
 $subscriber->subscribe(
-    $consumer, 
+    $consumer,
     function(\Interop\Amqp\AmqpMessage $message, \Enqueue\AmqpExt\AmqpConsumer $consumer): bool {
         try {
             // .. process a message ..
-            
+
             $consumer->acknowledge($message);
         } catch (\Exception $e) {
             // .. process exception ..
-            
+
             $consumer->reject($message);
-            
+
             return false; // Subscription will be cancelled
         }
-        
+
         return true; // Subscription will be continued
     }
 );
@@ -331,8 +307,7 @@ This is open-sourced software licensed under the [MIT License][link_license].
 
 [badge_packagist_version]:https://img.shields.io/packagist/v/avto-dev/amqp-rabbit-manager.svg?maxAge=180
 [badge_php_version]:https://img.shields.io/packagist/php-v/avto-dev/amqp-rabbit-manager.svg?longCache=true
-[badge_build_status]:https://travis-ci.org/avto-dev/amqp-rabbit-manager.svg?branch=master
-[badge_code_quality]:https://img.shields.io/scrutinizer/g/avto-dev/amqp-rabbit-manager.svg?maxAge=180
+[badge_build_status]:https://img.shields.io/github/workflow/status/avto-dev/amqp-rabbit-manager/tests/master
 [badge_coverage]:https://img.shields.io/codecov/c/github/avto-dev/amqp-rabbit-manager/master.svg?maxAge=60
 [badge_downloads_count]:https://img.shields.io/packagist/dt/avto-dev/amqp-rabbit-manager.svg?maxAge=180
 [badge_license]:https://img.shields.io/packagist/l/avto-dev/amqp-rabbit-manager.svg?longCache=true
@@ -345,7 +320,6 @@ This is open-sourced software licensed under the [MIT License][link_license].
 [link_build_status]:https://travis-ci.org/avto-dev/amqp-rabbit-manager
 [link_coverage]:https://codecov.io/gh/avto-dev/amqp-rabbit-manager/
 [link_changes_log]:https://github.com/avto-dev/amqp-rabbit-manager/blob/master/CHANGELOG.md
-[link_code_quality]:https://scrutinizer-ci.com/g/avto-dev/amqp-rabbit-manager/
 [link_issues]:https://github.com/avto-dev/amqp-rabbit-manager/issues
 [link_create_issue]:https://github.com/avto-dev/amqp-rabbit-manager/issues/new/choose
 [link_commits]:https://github.com/avto-dev/amqp-rabbit-manager/commits
