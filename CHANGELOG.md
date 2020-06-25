@@ -9,12 +9,17 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 ### Changed
 
 - Maximal `illuminate/*` package versions now is `7.*`
-- Minimal required `illuminate/*` package versions now is `^5.6`
+- Minimal `illuminate/*` package versions now is `^5.6`
+- Minimal required PHP version now is `7.2`
 - Version of `rabbitmq-c` lib in docker container updated up to `0.10.0`
 - Version of `php-amqp` lib in docker container updated up to `1.10.2`
 - Class `FactoryException` finalized
 - Minimal required `symfony/console` version now is `^4.4` _(reason: <https://github.com/symfony/symfony/issues/32750>)_
 - CI completely moved from "Travis CI" to "Github Actions" _(travis builds disabled)_
+
+### Added
+
+- PHP 7.4 is supported now
 
 ## v2.1.0
 

@@ -49,7 +49,7 @@ jobs: # Docs: <https://git.io/JvxXE>
         uses: shivammathur/setup-php@v2 # Action page: <https://github.com/shivammathur/setup-php>
         with:
           php-version: ${{ matrix.php }}
-          extensions: mbstring
+          extensions: mbstring, amqp
 
       - name: Start RabbitMQ server
         run: |
