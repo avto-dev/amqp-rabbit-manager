@@ -86,7 +86,7 @@ class QueuesFactoryTest extends AbstractTestCase
     public function testExceptionThrownWhenPassedWrongQueueName(): void
     {
         $this->expectException(FactoryException::class);
-        $this->expectExceptionMessageRegExp('~queue.*not.?exists~i');
+        $this->expectExceptionMessageMatches('~queue.*not.?exists~i');
 
         $this->factory->make(Str::random());
     }
@@ -97,7 +97,7 @@ class QueuesFactoryTest extends AbstractTestCase
     public function testExceptionThrownWhenQueueDeclaredWithoutName(): void
     {
         $this->expectException(FactoryException::class);
-        $this->expectExceptionMessageRegExp('~queue.*not.?set~i');
+        $this->expectExceptionMessageMatches('~queue.*not.?set~i');
 
         $this->factory = new QueuesFactory([
             'foo' => [
@@ -117,7 +117,7 @@ class QueuesFactoryTest extends AbstractTestCase
     public function testExceptionThrownWhenQueueDeclaredWithEmptyName(): void
     {
         $this->expectException(FactoryException::class);
-        $this->expectExceptionMessageRegExp('~queue.*not.?set~i');
+        $this->expectExceptionMessageMatches('~queue.*not.?set~i');
 
         $this->factory = new QueuesFactory([
             'foo' => [

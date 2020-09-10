@@ -143,7 +143,7 @@ class ConnectionsFactoryTest extends AbstractTestCase
     public function testExceptionThrownWhenDefaultDriverIsNotSet(): void
     {
         $this->expectException(FactoryException::class);
-        $this->expectExceptionMessageRegExp('~default.*not.*set~i');
+        $this->expectExceptionMessageMatches('~default.*not.*set~i');
 
         $this->factory = new ConnectionsFactory($this->connections_settings, $this->connection_defaults);
 

@@ -87,7 +87,7 @@ class ExchangesFactoryTest extends AbstractTestCase
     public function testExceptionThrownWhenPassedWrongExchangeName(): void
     {
         $this->expectException(FactoryException::class);
-        $this->expectExceptionMessageRegExp('~exchange.*not.?exists~i');
+        $this->expectExceptionMessageMatches('~exchange.*not.?exists~i');
 
         $this->factory->make(Str::random());
     }
@@ -98,7 +98,7 @@ class ExchangesFactoryTest extends AbstractTestCase
     public function testExceptionThrownWhenExchangeDeclaredWithoutName(): void
     {
         $this->expectException(FactoryException::class);
-        $this->expectExceptionMessageRegExp('~exchange.*not.?set~i');
+        $this->expectExceptionMessageMatches('~exchange.*not.?set~i');
 
         $this->factory = new ExchangesFactory([
             'foo' => [
@@ -118,7 +118,7 @@ class ExchangesFactoryTest extends AbstractTestCase
     public function testExceptionThrownWhenExchangeDeclaredWithEmptyName(): void
     {
         $this->expectException(FactoryException::class);
-        $this->expectExceptionMessageRegExp('~exchange.*not.?set~i');
+        $this->expectExceptionMessageMatches('~exchange.*not.?set~i');
 
         $this->factory = new ExchangesFactory([
             'foo' => [
