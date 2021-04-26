@@ -42,7 +42,7 @@ jobs: # Docs: <https://git.io/JvxXE>
         with:
           php-version: ${{ matrix.php }}
           extensions: mbstring, amqp
-          tools: composer:v1 # TODO update composer up to v2
+          tools: composer:v2
 
       - name: Start RabbitMQ server
         run: |
@@ -62,9 +62,6 @@ jobs: # Docs: <https://git.io/JvxXE>
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ matrix.setup }}-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install Composer 'hirak/prestissimo' package
-        run: composer global require hirak/prestissimo --update-no-dev --no-progress --ansi
 
       - name: Install lowest Composer dependencies
         if: matrix.setup == 'lowest'
