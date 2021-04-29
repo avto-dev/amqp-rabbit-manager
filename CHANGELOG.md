@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 ### Changed
 
-- upgrade composer to v2 [#9]
+- Composer `2.x` is supported now[#9]
 
 [#9]:https://github.com/avto-dev/amqp-rabbit-manager/issues/9
 
