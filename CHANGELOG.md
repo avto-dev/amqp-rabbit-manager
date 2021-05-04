@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## Unreleased
+
+### Changed
+
+- Composer `2.x` is supported now[#9]
+
+[#9]:https://github.com/avto-dev/amqp-rabbit-manager/issues/9
+
 ## v2.3.0
 
 ### Changed
