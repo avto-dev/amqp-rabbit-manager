@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog][keepachangelog] and this project adher
 
 ### Changed
 
+- Minimal required PHP version now is `7.3`
+- Minimal `symfony/*` version now is `5.0`
+- Minimal `phpunit/phpunit` package versions now is `9.3`
+- Version of `composer` in docker container updated up to `2.2.4`
 - Deprecated methods `assertRegExp`, `assertNotRegExp` to `assertMatchesRegularExpression`, `assertDoesNotMatchRegularExpression` [#11]
 
 [#11]:https://github.com/avto-dev/amqp-rabbit-manager/issues/11
