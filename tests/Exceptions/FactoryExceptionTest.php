@@ -25,11 +25,11 @@ class FactoryExceptionTest extends AbstractTestCase
      */
     public function testStaticFabrics(): void
     {
-        $this->assertRegExp('~connection.*not exists~i', FactoryException::connectionNotExists('')->getMessage());
-        $this->assertRegExp('~Default.*not set~i', FactoryException::defaultConnectionNotSet()->getMessage());
-        $this->assertRegExp('~Queue.+name.*not set~i', FactoryException::queueNameNotSet('')->getMessage());
-        $this->assertRegExp('~Queue.*not exists~i', FactoryException::queueNotExists('')->getMessage());
-        $this->assertRegExp('~Exchange.+name.*not set~i', FactoryException::exchangeNameNotSet('')->getMessage());
-        $this->assertRegExp('~Exchange.*not exists~i', FactoryException::exchangeNotExists('')->getMessage());
+        $this->assertMatchesRegularExpression('~connection.*not exists~i', FactoryException::connectionNotExists('')->getMessage());
+        $this->assertMatchesRegularExpression('~Default.*not set~i', FactoryException::defaultConnectionNotSet()->getMessage());
+        $this->assertMatchesRegularExpression('~Queue.+name.*not set~i', FactoryException::queueNameNotSet('')->getMessage());
+        $this->assertMatchesRegularExpression('~Queue.*not exists~i', FactoryException::queueNotExists('')->getMessage());
+        $this->assertMatchesRegularExpression('~Exchange.+name.*not set~i', FactoryException::exchangeNameNotSet('')->getMessage());
+        $this->assertMatchesRegularExpression('~Exchange.*not exists~i', FactoryException::exchangeNotExists('')->getMessage());
     }
 }

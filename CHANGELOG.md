@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog][keepachangelog] and this project adheres to [Semantic Versioning][semver].
 
+## UNRELEASED
+
+### Changed
+
+- Deprecated methods `assertRegExp`, `assertNotRegExp` to `assertMatchesRegularExpression`, `assertDoesNotMatchRegularExpression` [#11]
+
+[#11]:https://github.com/avto-dev/amqp-rabbit-manager/issues/11
+
 ## v2.4.0
 
 ### Changed

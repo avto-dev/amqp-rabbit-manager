@@ -128,18 +128,18 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
 
         foreach ($this->setup_map as $connection_name => $settings) {
             $connection_name_safe = \preg_quote($connection_name, '/');
-            $this->assertRegExp("~^.+connection.*{$connection_name_safe}.*$~ium", $output);
+            $this->assertMatchesRegularExpression("~^.+connection.*{$connection_name_safe}.*$~ium", $output);
 
             foreach ($settings['queues'] as $queue_id) {
                 $queue_id_safe = \preg_quote($queue_id, '/');
-                $this->assertRegExp("~^.*Create queue.+{$queue_id_safe}.*$~ium", $output);
-                $this->assertNotRegExp("~^.*Delete queue.+{$queue_id_safe}.*$~ium", $output);
+                $this->assertMatchesRegularExpression("~^.*Create queue.+{$queue_id_safe}.*$~ium", $output);
+                $this->assertDoesNotMatchRegularExpression("~^.*Delete queue.+{$queue_id_safe}.*$~ium", $output);
             }
 
             foreach ($settings['exchanges'] as $exchange_id) {
                 $exchange_id_safe = \preg_quote($exchange_id, '/');
-                $this->assertRegExp("~^.*Create exchange.+{$exchange_id_safe}.*$~ium", $output);
-                $this->assertNotRegExp("~^.*Delete exchange.+{$exchange_id_safe}.*$~ium", $output);
+                $this->assertMatchesRegularExpression("~^.*Create exchange.+{$exchange_id_safe}.*$~ium", $output);
+                $this->assertDoesNotMatchRegularExpression("~^.*Delete exchange.+{$exchange_id_safe}.*$~ium", $output);
             }
         }
     }
@@ -167,11 +167,11 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
         $this->assertSame(0, $this->artisan($this->command_signature));
         $output = $this->console()->output();
 
-        $this->assertNotRegExp('~^.+connection.*$~ium', $output);
-        $this->assertNotRegExp('~^.*Create queue.*$~ium', $output);
-        $this->assertNotRegExp('~^.*Delete queue.*$~ium', $output);
-        $this->assertNotRegExp('~^.*Create exchange.*$~ium', $output);
-        $this->assertNotRegExp('~^.*Delete exchange.*$~ium', $output);
+        $this->assertDoesNotMatchRegularExpression('~^.+connection.*$~ium', $output);
+        $this->assertDoesNotMatchRegularExpression('~^.*Create queue.*$~ium', $output);
+        $this->assertDoesNotMatchRegularExpression('~^.*Delete queue.*$~ium', $output);
+        $this->assertDoesNotMatchRegularExpression('~^.*Create exchange.*$~ium', $output);
+        $this->assertDoesNotMatchRegularExpression('~^.*Delete exchange.*$~ium', $output);
     }
 
     /**
@@ -192,8 +192,8 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
         ]));
         $output = $this->console()->output();
 
-        $this->assertRegExp('~data.+lost~i', $output);
-        $this->assertRegExp('~Command.+cancel~i', $output);
+        $this->assertMatchesRegularExpression('~data.+lost~i', $output);
+        $this->assertMatchesRegularExpression('~Command.+cancel~i', $output);
     }
 
     /**
@@ -216,22 +216,22 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
         ]));
         $output = $this->console()->output();
 
-        $this->assertNotRegExp('~data.+lost~i', $output); // Alert banner should not shown
+        $this->assertDoesNotMatchRegularExpression('~data.+lost~i', $output); // Alert banner should not shown
 
         foreach ($this->setup_map as $connection_name => $settings) {
             $connection_name_safe = \preg_quote($connection_name, '/');
-            $this->assertRegExp("~^.+connection.*{$connection_name_safe}.*$~ium", $output);
+            $this->assertMatchesRegularExpression("~^.+connection.*{$connection_name_safe}.*$~ium", $output);
 
             foreach ($settings['queues'] as $queue_id) {
                 $queue_id_safe = \preg_quote($queue_id, '/');
-                $this->assertRegExp("~^.*Create queue.+{$queue_id_safe}.*$~ium", $output);
-                $this->assertRegExp("~^.*Delete queue.+{$queue_id_safe}.*$~ium", $output);
+                $this->assertMatchesRegularExpression("~^.*Create queue.+{$queue_id_safe}.*$~ium", $output);
+                $this->assertMatchesRegularExpression("~^.*Delete queue.+{$queue_id_safe}.*$~ium", $output);
             }
 
             foreach ($settings['exchanges'] as $exchange_id) {
                 $exchange_id_safe = \preg_quote($exchange_id, '/');
-                $this->assertRegExp("~^.*Create exchange.+{$exchange_id_safe}.*$~ium", $output);
-                $this->assertRegExp("~^.*Delete exchange.+{$exchange_id_safe}.*$~ium", $output);
+                $this->assertMatchesRegularExpression("~^.*Create exchange.+{$exchange_id_safe}.*$~ium", $output);
+                $this->assertMatchesRegularExpression("~^.*Delete exchange.+{$exchange_id_safe}.*$~ium", $output);
             }
         }
     }
@@ -258,21 +258,21 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
 
         foreach ($this->setup_map as $connection_name => $settings) {
             $connection_name_safe = \preg_quote($connection_name, '/');
-            $this->assertRegExp("~^.+connection.*{$connection_name_safe}.*$~ium", $output);
+            $this->assertMatchesRegularExpression("~^.+connection.*{$connection_name_safe}.*$~ium", $output);
 
             foreach ($settings['queues'] as $queue_id) {
                 $queue_id_safe = \preg_quote($queue_id, '/');
-                $this->assertRegExp("~^.*Skip.+{$queue_id_safe}.*$~ium", $output);
+                $this->assertMatchesRegularExpression("~^.*Skip.+{$queue_id_safe}.*$~ium", $output);
             }
 
             foreach ($settings['exchanges'] as $exchange_id) {
                 $exchange_id_safe = \preg_quote($exchange_id, '/');
-                $this->assertRegExp("~^.*Skip.+{$exchange_id_safe}.*$~ium", $output);
+                $this->assertMatchesRegularExpression("~^.*Skip.+{$exchange_id_safe}.*$~ium", $output);
             }
         }
 
-        $this->assertNotRegExp('~' . \preg_quote($random_queue_id, '/') . '~', $output);
-        $this->assertNotRegExp('~' . \preg_quote($random_exchange_id, '/') . '~', $output);
+        $this->assertDoesNotMatchRegularExpression('~' . \preg_quote($random_queue_id, '/') . '~', $output);
+        $this->assertDoesNotMatchRegularExpression('~' . \preg_quote($random_exchange_id, '/') . '~', $output);
     }
 
     /**
@@ -312,18 +312,18 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
 
         foreach ($this->setup_map as $connection_name => $settings) {
             $connection_name_safe = \preg_quote($connection_name, '/');
-            $this->assertRegExp("~^.+connection.*{$connection_name_safe}.*$~ium", $output);
+            $this->assertMatchesRegularExpression("~^.+connection.*{$connection_name_safe}.*$~ium", $output);
 
             foreach ($settings['queues'] as $queue_id) {
                 $queue_id_safe = \preg_quote($queue_id, '/');
-                $this->assertRegExp("~^.*Create queue.+{$queue_id_safe}.*$~ium", $output);
-                $this->assertNotRegExp("~^.*Skip.+{$queue_id_safe}.*$~ium", $output);
+                $this->assertMatchesRegularExpression("~^.*Create queue.+{$queue_id_safe}.*$~ium", $output);
+                $this->assertDoesNotMatchRegularExpression("~^.*Skip.+{$queue_id_safe}.*$~ium", $output);
             }
 
             foreach ($settings['exchanges'] as $exchange_id) {
                 $exchange_id_safe = \preg_quote($exchange_id, '/');
-                $this->assertRegExp("~^.*Create exchange.+{$exchange_id_safe}.*$~ium", $output);
-                $this->assertNotRegExp("~^.*Skip.+{$exchange_id_safe}.*$~ium", $output);
+                $this->assertMatchesRegularExpression("~^.*Create exchange.+{$exchange_id_safe}.*$~ium", $output);
+                $this->assertDoesNotMatchRegularExpression("~^.*Skip.+{$exchange_id_safe}.*$~ium", $output);
             }
         }
     }
