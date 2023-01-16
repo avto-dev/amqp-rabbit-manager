@@ -84,6 +84,7 @@ Declare queue operation creates a queue on a broker side _(use command `rabbit:s
 $exchange = $connections
     ->default()
     ->declareQueue($queues->make('some-queue-id'));
+    
 ```
 
 ### Create exchange manually
