@@ -75,8 +75,10 @@ class ServiceProvider extends IlluminateServiceProvider
             function (Container $container): QueuesFactoryInterface {
                 /** @var ConfigRepository $config */
                 $config = $container->make(ConfigRepository::class);
+                /** @var array<string, array<string, mixed>> $queues */
+                $queues = (array) $config->get(static::getConfigRootKeyName() . '.queues');
 
-                return new QueuesFactory((array) $config->get(static::getConfigRootKeyName() . '.queues'));
+                return new QueuesFactory($queues);
             }
         );
     }
@@ -93,8 +95,10 @@ class ServiceProvider extends IlluminateServiceProvider
             function (Container $container): ExchangesFactoryInterface {
                 /** @var ConfigRepository $config */
                 $config = $container->make(ConfigRepository::class);
+                /** @var array<string, array<string, mixed>> $exchanges */
+                $exchanges = (array) $config->get(static::getConfigRootKeyName() . '.exchanges');
 
-                return new ExchangesFactory((array) $config->get(static::getConfigRootKeyName() . '.exchanges'));
+                return new ExchangesFactory($exchanges);
             }
         );
     }
@@ -113,10 +117,15 @@ class ServiceProvider extends IlluminateServiceProvider
                 $config = $container->make(ConfigRepository::class);
                 $root   = static::getConfigRootKeyName();
 
+                /** @var array<string, array<string, mixed>>, $connections */
+                $connections = (array) $config->get("{$root}.connections");
+                /** @var string|null $default */
+                $default = $config->get("{$root}.default_connection");
+
                 return new ConnectionsFactory(
-                    (array) $config->get("{$root}.connections"),
+                    $connections,
                     (array) $config->get("{$root}.connection_defaults"),
-                    $config->get("{$root}.default_connection")
+                    $default
                 );
             }
         );
@@ -133,6 +142,7 @@ class ServiceProvider extends IlluminateServiceProvider
             /** @var ConfigRepository $config */
             $config = $container->make(ConfigRepository::class);
 
+            /** @var Command */
             return $container->make(Commands\RabbitSetupCommand::class, [
                 'map' => $config->get(static::getConfigRootKeyName() . '.setup'),
             ]);
