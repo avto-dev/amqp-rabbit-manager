@@ -7,7 +7,7 @@ namespace AvtoDev\AmqpRabbitManager\Tests\Commands\Events;
 use AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleting;
 
 /**
- * @covers \AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleting<extended>
+ * @covers \AvtoDev\AmqpRabbitManager\Commands\Events\QueueDeleting
  */
 class QueueDeletingTest extends AbstractEventTestCase
 {

@@ -15,7 +15,7 @@ use AvtoDev\AmqpRabbitManager\Commands\RabbitSetupCommand;
 use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
 
 /**
- * @covers \AvtoDev\AmqpRabbitManager\ServiceProvider<extended>
+ * @covers \AvtoDev\AmqpRabbitManager\ServiceProvider
  */
 class ServiceProviderTest extends AbstractTestCase
 {

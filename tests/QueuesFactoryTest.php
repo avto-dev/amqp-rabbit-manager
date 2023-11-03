@@ -11,7 +11,7 @@ use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
 use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 
 /**
- * @covers \AvtoDev\AmqpRabbitManager\QueuesFactory<extended>
+ * @covers \AvtoDev\AmqpRabbitManager\QueuesFactory
  */
 class QueuesFactoryTest extends AbstractTestCase
 {

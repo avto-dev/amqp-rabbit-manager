@@ -23,7 +23,7 @@ use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeCreating;
 use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeDeleting;
 
 /**
- * @covers \AvtoDev\AmqpRabbitManager\Commands\RabbitSetupCommand<extended>
+ * @covers \AvtoDev\AmqpRabbitManager\Commands\RabbitSetupCommand
  *
  * @group usesExternalServices
  */

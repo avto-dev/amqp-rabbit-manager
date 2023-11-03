@@ -11,7 +11,7 @@ use AvtoDev\AmqpRabbitManager\ExchangesFactoryInterface;
 use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 
 /**
- * @covers \AvtoDev\AmqpRabbitManager\ExchangesFactory<extended>
+ * @covers \AvtoDev\AmqpRabbitManager\ExchangesFactory
  */
 class ExchangesFactoryTest extends AbstractTestCase
 {

@@ -7,7 +7,7 @@ namespace AvtoDev\AmqpRabbitManager\Tests\Commands\Events;
 use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeCreated;
 
 /**
- * @covers \AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeCreated<extended>
+ * @covers \AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeCreated
  */
 class ExchangeCreatedTest extends AbstractEventTestCase
 {
