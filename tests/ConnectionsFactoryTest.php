@@ -11,7 +11,7 @@ use AvtoDev\AmqpRabbitManager\ConnectionsFactoryInterface;
 use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 
 /**
- * @covers \AvtoDev\AmqpRabbitManager\ConnectionsFactory<extended>
+ * @covers \AvtoDev\AmqpRabbitManager\ConnectionsFactory
  */
 class ConnectionsFactoryTest extends AbstractTestCase
 {

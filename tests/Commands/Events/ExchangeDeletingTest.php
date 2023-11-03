@@ -7,7 +7,7 @@ namespace AvtoDev\AmqpRabbitManager\Tests\Commands\Events;
 use AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeDeleting;
 
 /**
- * @covers \AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeDeleting<extended>
+ * @covers \AvtoDev\AmqpRabbitManager\Commands\Events\ExchangeDeleting
  */
 class ExchangeDeletingTest extends AbstractEventTestCase
 {

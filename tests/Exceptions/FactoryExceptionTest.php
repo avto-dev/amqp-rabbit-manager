@@ -8,7 +8,7 @@ use AvtoDev\AmqpRabbitManager\Tests\AbstractTestCase;
 use AvtoDev\AmqpRabbitManager\Exceptions\FactoryException;
 
 /**
- * @covers \AvtoDev\AmqpRabbitManager\Exceptions\FactoryException<extended>
+ * @covers \AvtoDev\AmqpRabbitManager\Exceptions\FactoryException
  */
 class FactoryExceptionTest extends AbstractTestCase
 {

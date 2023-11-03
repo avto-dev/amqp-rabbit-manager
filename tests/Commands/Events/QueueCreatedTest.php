@@ -7,7 +7,7 @@ namespace AvtoDev\AmqpRabbitManager\Tests\Commands\Events;
 use AvtoDev\AmqpRabbitManager\Commands\Events\QueueCreated;
 
 /**
- * @covers \AvtoDev\AmqpRabbitManager\Commands\Events\QueueCreated<extended>
+ * @covers \AvtoDev\AmqpRabbitManager\Commands\Events\QueueCreated
  */
 class QueueCreatedTest extends AbstractEventTestCase
 {
