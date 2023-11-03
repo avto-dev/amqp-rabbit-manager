@@ -6,6 +6,7 @@ namespace AvtoDev\AmqpRabbitManager\Tests\Commands;
 
 use Exception;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Contracts\Console\Kernel;
 use AvtoDev\AmqpRabbitManager\ServiceProvider;
 use AvtoDev\AmqpRabbitManager\QueuesFactoryInterface;
@@ -115,13 +116,7 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
      */
     public function testCommandCallWithoutArguments(): void
     {
-        $this->expectsEvents([
-            QueueCreating::class, QueueCreated::class, ExchangeCreating::class, ExchangeCreated::class,
-        ]);
-
-        $this->doesntExpectEvents([
-            QueueDeleting::class, QueueDeleted::class, ExchangeDeleting::class, ExchangeDeleted::class,
-        ]);
+        Event::fake();
 
         $this->assertSame(0, $this->artisan($this->command_signature));
         $output = $this->console()->output();
@@ -142,6 +137,16 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
                 $this->assertDoesNotMatchRegularExpression("~^.*Delete exchange.+{$exchange_id_safe}.*$~ium", $output);
             }
         }
+
+        Event::assertDispatched(QueueCreating::class);
+        Event::assertDispatched(QueueCreated::class);
+        Event::assertDispatched(ExchangeCreating::class);
+        Event::assertDispatched(ExchangeCreated::class);
+
+        Event::assertNotDispatched(QueueDeleting::class);
+        Event::assertNotDispatched(QueueDeleted::class);
+        Event::assertNotDispatched(ExchangeDeleting::class);
+        Event::assertNotDispatched(ExchangeDeleted::class);
     }
 
     /**
@@ -153,10 +158,7 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
      */
     public function testCommandCallWithEmptyMap(): void
     {
-        $this->doesntExpectEvents([
-            QueueCreating::class, QueueCreated::class, ExchangeCreating::class, ExchangeCreated::class,
-            QueueDeleting::class, QueueDeleted::class, ExchangeDeleting::class, ExchangeDeleted::class,
-        ]);
+        Event::fake();
 
         $this->command = $this->app->make(RabbitSetupCommand::class, [
             'map' => [],
@@ -172,28 +174,45 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
         $this->assertDoesNotMatchRegularExpression('~^.*Delete queue.*$~ium', $output);
         $this->assertDoesNotMatchRegularExpression('~^.*Create exchange.*$~ium', $output);
         $this->assertDoesNotMatchRegularExpression('~^.*Delete exchange.*$~ium', $output);
+
+        Event::assertNotDispatched(QueueCreating::class);
+        Event::assertNotDispatched(QueueCreated::class);
+        Event::assertNotDispatched(ExchangeCreating::class);
+        Event::assertNotDispatched(ExchangeCreated::class);
+        Event::assertNotDispatched(QueueDeleting::class);
+        Event::assertNotDispatched(QueueDeleted::class);
+        Event::assertNotDispatched(ExchangeDeleting::class);
+        Event::assertNotDispatched(ExchangeDeleted::class);
     }
 
     /**
      * @small
      *
+     * @group www
+     *
      * @return void
      */
     public function testCommandCallWithRecreateButWithoutForce(): void
     {
-        $this->doesntExpectEvents([
-            QueueCreating::class, QueueCreated::class, ExchangeCreating::class, ExchangeCreated::class,
-            QueueDeleting::class, QueueDeleted::class, ExchangeDeleting::class, ExchangeDeleted::class,
-        ]);
+        Event::fake();
 
         $this->assertSame(0, $this->artisan($this->command_signature, [
-            '--recreate' => true,
-            //'--force'  => true,
+            '--recreate'       => true,
+            '--no-interaction' => true,
         ]));
         $output = $this->console()->output();
 
         $this->assertMatchesRegularExpression('~data.+lost~i', $output);
         $this->assertMatchesRegularExpression('~Command.+cancel~i', $output);
+
+        Event::assertNotDispatched(QueueCreating::class);
+        Event::assertNotDispatched(QueueCreated::class);
+        Event::assertNotDispatched(ExchangeCreating::class);
+        Event::assertNotDispatched(ExchangeCreated::class);
+        Event::assertNotDispatched(QueueDeleting::class);
+        Event::assertNotDispatched(QueueDeleted::class);
+        Event::assertNotDispatched(ExchangeDeleting::class);
+        Event::assertNotDispatched(ExchangeDeleted::class);
     }
 
     /**
@@ -205,10 +224,7 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
      */
     public function testCommandCallWithRecreateAndForce(): void
     {
-        $this->expectsEvents([
-            QueueCreating::class, QueueCreated::class, ExchangeCreating::class, ExchangeCreated::class,
-            QueueDeleting::class, QueueDeleted::class, ExchangeDeleting::class, ExchangeDeleted::class,
-        ]);
+        Event::fake();
 
         $this->assertSame(0, $this->artisan($this->command_signature, [
             '--recreate' => true,
@@ -234,6 +250,15 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
                 $this->assertMatchesRegularExpression("~^.*Delete exchange.+{$exchange_id_safe}.*$~ium", $output);
             }
         }
+
+        Event::assertDispatched(QueueCreating::class);
+        Event::assertDispatched(QueueCreated::class);
+        Event::assertDispatched(ExchangeCreating::class);
+        Event::assertDispatched(ExchangeCreated::class);
+        Event::assertDispatched(QueueDeleting::class);
+        Event::assertDispatched(QueueDeleted::class);
+        Event::assertDispatched(ExchangeDeleting::class);
+        Event::assertDispatched(ExchangeDeleted::class);
     }
 
     /**
@@ -245,10 +270,7 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
      */
     public function testPassingUnknownQueueIds(): void
     {
-        $this->doesntExpectEvents([
-            QueueCreating::class, QueueCreated::class, ExchangeCreating::class, ExchangeCreated::class,
-            QueueDeleting::class, QueueDeleted::class, ExchangeDeleting::class, ExchangeDeleted::class,
-        ]);
+        Event::fake();
 
         $this->assertSame(0, $this->artisan($this->command_signature, [
             '--queue-id'    => [$random_queue_id = Str::random()],
@@ -273,6 +295,15 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
 
         $this->assertDoesNotMatchRegularExpression('~' . \preg_quote($random_queue_id, '/') . '~', $output);
         $this->assertDoesNotMatchRegularExpression('~' . \preg_quote($random_exchange_id, '/') . '~', $output);
+
+        Event::assertNotDispatched(QueueCreating::class);
+        Event::assertNotDispatched(QueueCreated::class);
+        Event::assertNotDispatched(ExchangeCreating::class);
+        Event::assertNotDispatched(ExchangeCreated::class);
+        Event::assertNotDispatched(QueueDeleting::class);
+        Event::assertNotDispatched(QueueDeleted::class);
+        Event::assertNotDispatched(ExchangeDeleting::class);
+        Event::assertNotDispatched(ExchangeDeleted::class);
     }
 
     /**
@@ -284,13 +315,7 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
      */
     public function testPassingAllKnownQueueAndExchangeIds(): void
     {
-        $this->expectsEvents([
-            QueueCreating::class, QueueCreated::class, ExchangeCreating::class, ExchangeCreated::class,
-        ]);
-
-        $this->doesntExpectEvents([
-            QueueDeleting::class, QueueDeleted::class, ExchangeDeleting::class, ExchangeDeleted::class,
-        ]);
+        Event::fake();
 
         $queue_ids = $exchange_ids = [];
 
@@ -326,5 +351,15 @@ class RabbitSetupCommandTest extends AbstractCommandTestCase
                 $this->assertDoesNotMatchRegularExpression("~^.*Skip.+{$exchange_id_safe}.*$~ium", $output);
             }
         }
+
+        Event::assertDispatched(QueueCreating::class);
+        Event::assertDispatched(QueueCreated::class);
+        Event::assertDispatched(ExchangeCreating::class);
+        Event::assertDispatched(ExchangeCreated::class);
+
+        Event::assertNotDispatched(QueueDeleting::class);
+        Event::assertNotDispatched(QueueDeleted::class);
+        Event::assertNotDispatched(ExchangeDeleting::class);
+        Event::assertNotDispatched(ExchangeDeleted::class);
     }
 }
