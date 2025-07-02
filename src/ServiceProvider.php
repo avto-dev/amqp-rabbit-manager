@@ -117,14 +117,17 @@ class ServiceProvider extends IlluminateServiceProvider
                 $config = $container->make(ConfigRepository::class);
                 $root   = static::getConfigRootKeyName();
 
-                /** @var array<string, array<string, mixed>>, $connections */
+                /** @var array<string, array<string, mixed>> $connections */
                 $connections = (array) $config->get("{$root}.connections");
                 /** @var string|null $default */
                 $default = $config->get("{$root}.default_connection");
 
+                /** @var array<string, mixed> $connection_defaults */
+                $connection_defaults = (array) $config->get("{$root}.connection_defaults");
+
                 return new ConnectionsFactory(
                     $connections,
-                    (array) $config->get("{$root}.connection_defaults"),
+                    $connection_defaults,
                     $default
                 );
             }
